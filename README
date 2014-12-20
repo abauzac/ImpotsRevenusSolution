@@ -1,0 +1,49 @@
+
+Les fichiers Excel sont publiés sous "Licence Ouverte - Open Licence", produits par "Le ministère des Finances et des Comptes publics"  :
+https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/
+
+Lien vers la licence :
+http://wiki.data.gouv.fr/wiki/Licence_Ouverte_/_Open_Licence
+
+LICENCE
+
+En raison des CGU prévues par data.gouv.fr, ces données seront publiées sous Licence Ouverte également.
+
+A PROPOS :
+
+Ces fichiers représentent, pour chaque annéee, les tableaux d'impôts sur les revenus de chaque département visibles dans chaque fichier Excel.
+On retrouve donc pour chaque département :
+- les différents totaux du département
+- les différentes tranches d'impôts et leurs valeurs associés
+
+Les propriétés ayant pour valeur "-1" signifient qu'aucune information n'était disponible dans le fichier excel (correspondant à "n.d." dans les excels)
+
+Chaque fichier correspond à l'année (N) de déclaration des revenus imposés au cours de l'année suivante (N+1)
+
+A plusieurs reprises, les impots ont changé les valeurs de chaque tranche :
+- de 2003 à 2005 : 12 tranches dont la dernière tranche démarre à 78 000 euro
+- de 2006 à 2009 : 12 tranches dont la dernière tranche démarre à 97 500 euro
+- de 2010 à 2012 : 8 tranches dont la dernière tranche démarre à 100 000 euro
+
+NOTE :
+
+Les informations contenues dans les fichiers JSON ont été extraites de façon automatisée depuis les fichiers Excel fournis par la plateforme data.gouv.fr (via impots.gouv.fr).
+
+Etant donné la quantité importante d'informations, aucune vérification quant à la qualité des données extraites n'a été réalisée.
+Autrement dit, ces fichiers sont susceptibles de contenir des erreurs, malgré les précautions prises sur l'étude des fichiers.
+Merci de contacter l'auteur dans ce cas en spécifiant l'année, le département et le type d'erreur rencontrée.
+
+2 modifications effectuées
+- 2004 : département 92(0), une feuille Excel "en trop" a été supprimée car inutile (et provoquant un bug au moment du traitement du fichier).
+- 2012 & 2013 : 
+	- département 971 : Rajout des totaux non présents
+	- séparation en 2 fichiers : 971.xls pour la Guadeloupe et 975.xls pour Collectivités d'Outre Mer (*)
+
+* : ce fichier contenait des informations pour 2 entités différentes : "Guadeloupe" et "Collectivités d'Outre Mer". 
+
+Note aux développeurs :
+
+Les fichiers Excel ne sont pas versionnés mais se trouvent dans le fichier /resources/resources.zip ou bien peuvent être télchargés en utilisant le projet "ImpotsExcelDownloader" qui s'occupera de télécharger tous les fichiers depuis impots.gouv.fr (~220Mo)
+
+Les montants pour chaque département correspondent à des sommes importantes et ne peuvent pas être stockées sur 4 octets. Utiliser des entiers pouvant contenir 8 octets (type long en c#, BIGINT en MySQL, etc.) afin de ne pas avoir de problèmes. 
+

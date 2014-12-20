@@ -1,0 +1,12 @@
+LICENCE
+
+Solution Visual studio sous licence libre.
+
+Le projet utilise le package json.NET de NewtonSoft sous licence MIT :
+https://github.com/JamesNK/Newtonsoft.Json
+
+Le projet utilise le package Microsoft.Office.Interop.Excel
+
+Le projet a été réalisé avec Visual Studio 2013 Community Edition
+
+Les fichiers .json dans le dossier "resources" sont sous licence ouverte (voir le fichier LICENCE de ce dossier)
