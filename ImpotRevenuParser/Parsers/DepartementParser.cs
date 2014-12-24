@@ -96,7 +96,7 @@ namespace ImpotRevenuParser.Parsers
                     else
                     {
                         if(String.IsNullOrEmpty(dep.depName)){
-                            dep.depName = this.getCellText(rowNum, this.depColumn);
+                            dep.depName = this.getCellText(rowNum, this.depColumn).Trim();
                             dep.depNumber = this.getCellText(rowNum, this.depColumn - 2);
                         }
                         listTranches.Add(t);

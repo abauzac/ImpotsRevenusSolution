@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImpotRevenuParser.model
 {
-    class Tranche : ImpotsRevenus
+    public class Tranche : ImpotsRevenus
     {
         public string trancheName;
 

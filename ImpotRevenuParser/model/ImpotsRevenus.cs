@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImpotRevenuParser.model
 {
-    class ImpotsRevenus
+    public class ImpotsRevenus
     {
 
         public long nbFoyers;
