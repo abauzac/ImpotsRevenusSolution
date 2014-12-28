@@ -131,5 +131,15 @@ namespace ComputeDataImpotsRevenus
             return giniEachYear;
 
         }
+
+        internal Dictionary<int, Departement> getData()
+        {
+            Dictionary<int, Departement> dataForEachYear = new Dictionary<int, Departement>();
+            foreach (Departement dep in everyYearsForCurrentDepartement)
+            {
+                dataForEachYear.Add(dep.year, dep);
+            }
+            return dataForEachYear;
+        }
     }
 }

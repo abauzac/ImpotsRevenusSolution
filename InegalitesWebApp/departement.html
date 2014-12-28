@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="css/libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/app/style.css" rel="stylesheet" />
+
+
+</head>
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-fixed-top">
+
+        <div class="navigationbar container">
+            <div class="navbar-header">
+                <a class="navbar-brand">Les revenus en France</a>
+            </div>
+
+            <ul class="nav navbar-nav ">
+                <li><a href="#">Les cartes</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
+
+                </div>
+            </form>
+        </div>
+
+    </nav>
+    <!-- /header -->
+
+    <div class="content-wrapper container">
+
+        <div class="row">
+            <!-- LEFT MENU -->
+            <div class="menugauche col-sm-3 col-md-2">
+                <a class="list-group-item" href="#">lsit1</a>
+                <a class="list-group-item" href="#">lsit1</a>
+            </div>
+            <!-- MIDDLE CONTENT -->
+            <div class="content col-sm-7 col-md-8">
+                <div id="contentDiv">
+
+                </div>
+            </div>
+            <!-- RIGHT MENU -->
+            <div class="col-sm-2 col-md-2 ">
+                RIGHT
+            </div>
+        </div>
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/typeahead.js"></script>
+    <script src="js/app/index.js"></script>
+    <script src="js/app/departement.js"></script>
+
+
+
+    <script id="errorTemplate" type="text/html">
+        <div class="panel-group">
+            <h2>
+                Oups ! Une erreur est survenue !
+            </h2>
+            <div class="alert alert-danger">
+                Erreur : <span id="errorTextId"></span>
+            </div>
+        </div>
+    </script>
+</body>
+</html>

@@ -38,5 +38,11 @@ namespace ComputeDataImpotsRevenus.Model
             }
 
         }
+
+        public string Numero { get; set; }
+
+        public string Nom { get; set; }
+
+        public Dictionary<int, ImpotRevenuParser.model.Departement> Data { get; set; }
     }
 }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpotsExcelDownloader", "Im
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComputeDataImpotsRevenus", "ComputeDataImpotsRevenus\ComputeDataImpotsRevenus.csproj", "{8B389959-DAE5-4AC9-BA0B-7A068138E843}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InegalitesWebApp", "InegalitesWebApp\InegalitesWebApp.csproj", "{0EDE4FA0-6539-421E-B207-F1908EA9E2C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{8B389959-DAE5-4AC9-BA0B-7A068138E843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B389959-DAE5-4AC9-BA0B-7A068138E843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B389959-DAE5-4AC9-BA0B-7A068138E843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EDE4FA0-6539-421E-B207-F1908EA9E2C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDE4FA0-6539-421E-B207-F1908EA9E2C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDE4FA0-6539-421E-B207-F1908EA9E2C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDE4FA0-6539-421E-B207-F1908EA9E2C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
