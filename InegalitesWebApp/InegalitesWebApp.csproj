@@ -147,6 +147,7 @@
     <Content Include="js\libs\chartist.js" />
     <Content Include="js\libs\jquery.js" />
     <Content Include="js\libs\npm.js" />
+    <Content Include="js\libs\numeral.js" />
     <Content Include="js\libs\typeahead.js" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="js\libs\numeral.fr.js" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

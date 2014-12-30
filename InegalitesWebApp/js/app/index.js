@@ -1,21 +1,20 @@
 ﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="js/departements.ts" />
-
 var dep;
-class TypeAheadMatcher {
-
-    public static findMatches(q: string, cb: (a: Array<any>) => void) {
-
+var TypeAheadMatcher = (function () {
+    function TypeAheadMatcher() {
+    }
+    TypeAheadMatcher.findMatches = function (q, cb) {
         var matches, substrRegex;
 
         var matchStrings = function (data) {
-
-            if (!dep) dep = data; // caching datas;
+            if (!dep)
+                dep = data; // caching datas;
             if (data != null) {
                 matches = [];
                 substrRegex = new RegExp(q, 'i');
 
-                $.each(dep, function (i, str: string) {
+                $.each(dep, function (i, str) {
                     if (substrRegex.test(str)) {
                         matches.push({ value: str });
                     }
@@ -23,83 +22,71 @@ class TypeAheadMatcher {
 
                 cb(matches);
             }
-        }
+        };
 
         if (!dep) {
-
             $.ajax("./datas/deplist.json", {
-                success: (data: any, status: string) => {
+                success: function (data, status) {
                     console.log("request " + new Date());
                     matchStrings(data);
-                    
                 }
             });
         } else {
             matchStrings(dep);
         }
+    };
+    return TypeAheadMatcher;
+})();
 
-        
+var Main = (function () {
+    function Main() {
     }
-
-
-
-}
-
-class Main {
-
-    private substringmatch: TypeAheadMatcher;
-
-    constructor() {
-    }
-
-    public createTypeAhead() {
+    Main.prototype.createTypeAhead = function () {
         var domInput = $("#searchDepartements");
-        domInput.typeahead(
-            {
-                hint: true,
-                highlight: true,
-                minLength: 2
-            },
-            {
-                displayKey: 'value',
-                source: TypeAheadMatcher.findMatches
-            });
+        domInput.typeahead({
+            hint: true,
+            highlight: true,
+            minLength: 2
+        }, {
+            displayKey: 'value',
+            source: TypeAheadMatcher.findMatches
+        });
         domInput.on("typeahead:selected", this.onSelectedDepartement);
-        
-    }
+    };
 
-    private onSelectedDepartement(event: JQueryEventObject, ...args: any[]):void {
+    Main.prototype.onSelectedDepartement = function (event) {
+        var args = [];
+        for (var _i = 0; _i < (arguments.length - 1); _i++) {
+            args[_i] = arguments[_i + 1];
+        }
         if (args != null && args.length > 0) {
             var item = args[0];
-            var itemValue:string = item.value || null;
+            var itemValue = item.value || null;
             if (itemValue) {
+                var arrayItemValue = itemValue.split(" - ");
+                if (!arrayItemValue || arrayItemValue.length == 0)
+                    throw "Can't parse item value " + itemValue + " / " + arrayItemValue;
 
-                var arrayItemValue: string[] = itemValue.split(" - ");
-                if (!arrayItemValue || arrayItemValue.length == 0) throw "Can't parse item value " + itemValue + " / " + arrayItemValue;
-
-                var hash:string = arrayItemValue[0];
+                var hash = arrayItemValue[0];
 
                 if (window.location.href.indexOf("departement") > 0) {
                     document.location.hash = hash + "-index";
                     main.buildPage();
-                } else { // redirect
+                } else {
                     document.location.href = "departement.html#" + hash + "-intro";
                 }
-
             }
-
         }
-    }
+    };
 
-    public buildPage() {
+    Main.prototype.buildPage = function () {
         var dep = new DepPageBuilder();
-    }
-}
-var main:Main;
-$(document).ready(() => {
-
+    };
+    return Main;
+})();
+var main;
+$(document).ready(function () {
     main = new Main();
     main.createTypeAhead();
     numeral.language('fr');
 });
-

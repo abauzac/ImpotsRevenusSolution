@@ -36,7 +36,7 @@
     </nav>
     <!-- /header -->
 
-    <div class="content-wrapper container">
+    <div class="content-wrapper container-fluid">
 
         <div class="row">
             <!-- LEFT MENU -->
@@ -45,14 +45,10 @@
                 <a class="list-group-item" href="#">lsit1</a>
             </div>
             <!-- MIDDLE CONTENT -->
-            <div class="content col-sm-7 col-md-8">
+            <div class="content col-sm-9 col-md-10">
                 <div id="contentDiv">
 
                 </div>
-            </div>
-            <!-- RIGHT MENU -->
-            <div class="col-sm-2 col-md-2 ">
-                RIGHT
             </div>
         </div>
 
@@ -62,6 +58,9 @@
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
     <script src="js/libs/typeahead.js"></script>
+    <script src="js/libs/numeral.js"></script>
+    <script src="js/libs/numeral.fr.js"></script>
+
     <script src="js/app/index.js"></script>
     <script src="js/app/departement.js"></script>
 
@@ -77,5 +76,47 @@
             </div>
         </div>
     </script>
+
+    <script id="depIntroTemplate" type="text/html">
+        <h2 class="departement-intro__depName"></h2>
+        <h4>Recapitulatifs des chiffres du département <span>(données brutes)</span></h4>
+        <p>Ces chiffres sont ceux fournis par le site <a href="https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/">data.gouv.fr</a></p>
+        <br />
+        <div class="departement-intro__table-container"></div>
+
+    </script>
+
+    <script id="depIntroTableTempalte" type="text/html">
+
+        
+        <table class="table table-striped">
+            <thead>
+                <tr class="intro-table__thead-top">
+                    <th class="intro-table__year"></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="2">Traitements et salaires</th>
+                    <th colspan="2">Retraites et pensions</th>
+                </tr>
+                <tr class="intro-table__thead-bottom">
+                    <th>Tranches (€)</th>
+                    <th>Foyers</th>
+                    <th>Revenus</th>
+                    <th>Impôt Net</th>
+                    <th>Foyers Imposables</th>
+                    <th>Revenus imposables</th>
+                    <th>Foyers</th>
+                    <th>Montant</th>
+                    <th>Foyers</th>
+                    <th>Montant</th>
+                </tr>
+            </thead>
+            <tbody class="intro-table__tbody"></tbody>
+        </table>
+    </script>
+
 </body>
 </html>

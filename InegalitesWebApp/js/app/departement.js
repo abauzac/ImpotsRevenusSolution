@@ -1,72 +1,37 @@
-﻿
-/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
+﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="index.ts" />
-
-class Tranche {
-    public trancheName: string;
-    public trancheMin: number;
-    public trancheMax: number;
-    public nbFoyers: number;
-    public nbFoyersImposables: number;
-    public revenus: number;
-    public revenusImposables: number;
-    public impot: number;
-    public nbFoyers_salaires: number;
-    public revenus_salaires: number;
-    public nbFoyers_retraites: number;
-    public revenus_retraites: number;
-
-}
+var Tranche = (function () {
+    function Tranche() {
+    }
+    return Tranche;
+})();
 
 /**
- * Within DepartementJSON.Data[YEAR]
- */
-class DepartementYear {
-    public depNumber: string;
-    public depName: string;
-    public year: number;
+* Within DepartementJSON.Data[YEAR]
+*/
+var DepartementYear = (function () {
+    function DepartementYear() {
+    }
+    return DepartementYear;
+})();
 
-    public tranches: Tranche[];
+var DepartementJSON = (function () {
+    function DepartementJSON() {
+    }
+    return DepartementJSON;
+})();
 
-    public nbFoyers: number;
-    public nbFoyersImposables: number;
-    public revenus: number;
-    public revenusImposables: number;
-    public impot: number;
-    public nbFoyers_salaires: number;
-    public revenus_salaires: number;
-    public nbFoyers_retraites: number;
-    public revenus_retraites: number;
-
-}
-
-class DepartementJSON {
-    
-    public Gini: any;
-    public Lorenz: any;
-    public Numero: any;
-    public Moyennes: any;
-    public Nom: any;
-
-    public Data: any;
-}
-
-declare var numeral;
-
-class DepPageBuilder {
-    public depNumber: string = null;
-    public pageName: string = null;
-    public json: DepartementJSON = null; 
-
-    public errorTpl: JQuery = $("<div>").html($("#errorTemplate").html());
-    public introTpl: JQuery = $("<div>").html($("#depIntroTemplate").html());
-    public tableDepYearTpl: JQuery = $("<div>").html($("#depIntroTableTempalte").html());
-    
-
-    public contentDiv: JQuery = $("#contentDiv");
-
-    constructor() {
-        var hash:string = window.location.hash;
+var DepPageBuilder = (function () {
+    function DepPageBuilder() {
+        var _this = this;
+        this.depNumber = null;
+        this.pageName = null;
+        this.json = null;
+        this.errorTpl = $("<div>").html($("#errorTemplate").html());
+        this.introTpl = $("<div>").html($("#depIntroTemplate").html());
+        this.tableDepYearTpl = $("<div>").html($("#depIntroTableTempalte").html());
+        this.contentDiv = $("#contentDiv");
+        var hash = window.location.hash;
         if (hash && hash.length > 0) {
             var hashParams = hash.split("-");
 
@@ -79,25 +44,21 @@ class DepPageBuilder {
 
                 $.ajax({
                     url: url,
-                    success: (data: DepartementJSON, status) => {
-                        this.json = data;
+                    success: function (data, status) {
+                        _this.json = data;
 
-                        this.buildContent(pageType);
+                        _this.buildContent(pageType);
                     },
-                    error: (xhr: JQueryXHR, status: string) => {
-                        this.showErrorPage("Impossible de récupérer les données JSON<br />" +
-                            "URL : datas/departements/" + hashParams[0] + ".json <br />" +
-                            "Status requête : " + xhr.status);
+                    error: function (xhr, status) {
+                        _this.showErrorPage("Impossible de récupérer les données JSON<br />" + "URL : datas/departements/" + hashParams[0] + ".json <br />" + "Status requête : " + xhr.status);
                     }
                 });
             } else {
                 this.showErrorPage("Erreur : l'adresse URL ne semble pas correcte :s");
-                
             }
         }
     }
-
-    public buildContent(pagetype:string) {
+    DepPageBuilder.prototype.buildContent = function (pagetype) {
         switch (pagetype) {
             case "intro":
                 this.buildIntroPage();
@@ -105,9 +66,9 @@ class DepPageBuilder {
             default:
                 this.buildIntroPage();
         }
-    }
+    };
 
-    public buildIntroPage(): void {
+    DepPageBuilder.prototype.buildIntroPage = function () {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.introTpl.clone();
@@ -115,11 +76,11 @@ class DepPageBuilder {
 
             for (var year = 2003; year <= 2012; year++) {
                 var clonedTableTpl = this.tableDepYearTpl.clone();
-                var depYear: DepartementYear = this.json.Data["" + year];
-                clonedTableTpl.find(".intro-table__year").prepend(""+year);
+                var depYear = this.json.Data["" + year];
+                clonedTableTpl.find(".intro-table__year").prepend("" + year);
 
-                for (var tNum = 0; tNum < depYear.tranches.length; tNum++ ) {
-                    var t: Tranche = depYear.tranches[tNum];
+                for (var tNum = 0; tNum < depYear.tranches.length; tNum++) {
+                    var t = depYear.tranches[tNum];
                     var rowString = "<tr>";
                     rowString += "<th scope='row'><small>" + t.trancheName + "<small></th>";
                     rowString += "<td>" + t.nbFoyers + "</td>";
@@ -149,29 +110,24 @@ class DepPageBuilder {
                     clonedTableTpl.find(".intro-table__tbody").append(rowString);
                 }
 
-
                 clonedIntroTpl.find(".departement-intro__table-container").append(clonedTableTpl);
             }
-
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
         } else {
             this.showErrorPage("Impossible de récupérer les données JSON");
         }
-    }
+    };
 
-    public showErrorPage(message: string) {
-
+    DepPageBuilder.prototype.showErrorPage = function (message) {
         var clonedTpl = this.errorTpl.clone();
 
-        clonedTpl.find("#errorTextId").prepend("<p>" +  message +"<p>");
+        clonedTpl.find("#errorTextId").prepend("<p>" + message + "<p>");
         this.contentDiv.empty().prepend(clonedTpl.html());
-    }
-
-}
-
+    };
+    return DepPageBuilder;
+})();
 
 $(document).ready(function () {
     main.buildPage();
-
 });
