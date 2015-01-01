@@ -29,6 +29,7 @@
     <Content Include="css\app\style.min.css">
       <DependentUpon>style.css</DependentUpon>
     </Content>
+    <Content Include="css\libs\chartist.css" />
     <Content Include="departement.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="index.html" />
@@ -156,6 +157,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app\departement.ts" />
     <TypeScriptCompile Include="js\app\index.ts" />
+    <TypeScriptCompile Include="js\app\models.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <ItemGroup>

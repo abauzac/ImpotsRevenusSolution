@@ -9,6 +9,7 @@
     <!-- Bootstrap -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
     <link href="css/libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/libs/chartist.css" rel="stylesheet">
     <link href="css/app/style.css" rel="stylesheet" />
 
 
@@ -40,7 +41,7 @@
 
         <div class="row">
             <!-- LEFT MENU -->
-            <div class="menugauche col-sm-3 col-md-2">
+            <div class="menugauche list-group col-sm-3 col-md-2">
                 <a class="list-group-item" href="#">lsit1</a>
                 <a class="list-group-item" href="#">lsit1</a>
             </div>
@@ -54,17 +55,19 @@
 
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Load libs -->
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
     <script src="js/libs/typeahead.js"></script>
+    <script src="js/libs/chartist.js"></script>
     <script src="js/libs/numeral.js"></script>
     <script src="js/libs/numeral.fr.js"></script>
 
+    <!-- Load app javascript-->
     <script src="js/app/index.js"></script>
     <script src="js/app/departement.js"></script>
 
-
+    <!-- Load templates -->
 
     <script id="errorTemplate" type="text/html">
         <div class="panel-group">
@@ -78,7 +81,7 @@
     </script>
 
     <script id="depIntroTemplate" type="text/html">
-        <h2 class="departement-intro__depName"></h2>
+        <h2 class="departement__depName"></h2>
         <h4>Recapitulatifs des chiffres du département <span>(données brutes)</span></h4>
         <p>Ces chiffres sont ceux fournis par le site <a href="https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/">data.gouv.fr</a></p>
         <br />
@@ -86,36 +89,71 @@
 
     </script>
 
-    <script id="depIntroTableTempalte" type="text/html">
+    <script id="depIntroTableTemplate" type="text/html">
+        <div class="panel panel-default">
+            <div class="panel-heading intro-table__year"></div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="intro-table__thead-top">
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"><small>Traitements et salaires</small></th>
+                            <th colspan="2"><small>Retraites et pensions</th>
+                        </tr>
+                        <tr class="intro-table__thead-bottom">
+                            <th><small>Tranches (€)</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Revenus</small></th>
+                            <th><small>Impôt Net</small></th>
+                            <th><small>Foyers Imposables</small></th>
+                            <th><small>Revenus imposables</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Montant</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Montant</small></th>
+                        </tr>
+                    </thead>
+                    <tbody class="intro-table__tbody"></tbody>
+                </table>
 
-        
-        <table class="table table-striped">
-            <thead>
-                <tr class="intro-table__thead-top">
-                    <th class="intro-table__year"></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th colspan="2">Traitements et salaires</th>
-                    <th colspan="2">Retraites et pensions</th>
-                </tr>
-                <tr class="intro-table__thead-bottom">
-                    <th>Tranches (€)</th>
-                    <th>Foyers</th>
-                    <th>Revenus</th>
-                    <th>Impôt Net</th>
-                    <th>Foyers Imposables</th>
-                    <th>Revenus imposables</th>
-                    <th>Foyers</th>
-                    <th>Montant</th>
-                    <th>Foyers</th>
-                    <th>Montant</th>
-                </tr>
-            </thead>
-            <tbody class="intro-table__tbody"></tbody>
-        </table>
+            </div>
+        </div>
+
+
+    </script>
+
+
+    <script id="depGiniTemplate" type="text/html">
+        <h2 class="departement__depName"></h2>
+
+        <div>
+            Le coefficient de Gini est un nombre variant de 0 à 1, où 0 signifie l'égalité parfaite et 1 signifie l'inégalité totale.
+            Ce coefficient est très utilisé pour mesurer l'inégalité des revenus dans un pays.
+        </div>
+        <!-- Chartist.js -->
+        <div class="chart-gini ct-chart"></div>
+
+    </script>
+
+    <script id="depMoyennesTemplate" type="text/html">
+        <h2 class="departement__depName"></h2>
+        <div class="panel">
+            <div class="lead">
+                Evolution de la moyenne des revenus / habitants dans le département (non corrigée de l'inflation)
+            </div>
+            <div class="bg-info">
+                Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                augmente nécessairement les revenus (et fausse le graphique).
+            </div>
+        </div>
+        <!-- Chartist.js -->
+        <div class="chart-gini ct-chart"></div>
+
     </script>
 
 </body>

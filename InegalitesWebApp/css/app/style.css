@@ -21,9 +21,11 @@
 }
 .content-wrapper {
   margin-top: 50px;
+  width: 98%;
 }
 .menugauche {
   top: 100px;
+  box-shadow: none;
 }
 .content {
   border: 1px solid #ddd;

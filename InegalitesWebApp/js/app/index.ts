@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="js/departements.ts" />
+/// <reference path="departement.ts" />
 
 var dep;
 class TypeAheadMatcher {
@@ -45,11 +45,21 @@ class TypeAheadMatcher {
 
 }
 
+interface IPageBuilder {
+    buildPage(): void;
+    buildContentPage(): void;
+    pageName: string;
+}
+
+
 class Main {
 
     private substringmatch: TypeAheadMatcher;
+    public pageBuilder: IPageBuilder = null;
+
 
     constructor() {
+       
     }
 
     public createTypeAhead() {
@@ -77,13 +87,20 @@ class Main {
                 var arrayItemValue: string[] = itemValue.split(" - ");
                 if (!arrayItemValue || arrayItemValue.length == 0) throw "Can't parse item value " + itemValue + " / " + arrayItemValue;
 
-                var hash:string = arrayItemValue[0];
+                var depNumber:string = arrayItemValue[0];
 
                 if (window.location.href.indexOf("departement") > 0) {
-                    document.location.hash = hash + "-index";
-                    main.buildPage();
+                    if (!main.pageBuilder.pageName)  { // on connait pas la page : redir vers intro
+                        main.pageBuilder.pageName = "intro";
+                    }
+                    document.location.hash = depNumber + "-" + main.pageBuilder.pageName;
+                    (<DepPageBuilder>main.pageBuilder).depNumber = depNumber;
+
+                    main.pageBuilder.buildPage();
+
+                    $(event.target).val("");
                 } else { // redirect
-                    document.location.href = "departement.html#" + hash + "-intro";
+                    document.location.href = "departement.html#" + depNumber + "-intro";
                 }
 
             }
@@ -91,15 +108,59 @@ class Main {
         }
     }
 
-    public buildPage() {
-        var dep = new DepPageBuilder();
-    }
 }
+
+class ContentPage {
+
+    public contentDiv: JQuery = $("#contentDiv");
+    public json: DepartementJSON = null;
+
+    constructor(json: DepartementJSON) {
+        
+        this.json = json;
+    }
+
+    public build() {
+
+    }
+
+
+    public buildMenu() {
+
+    }
+
+    public showErrorPage(message: string) {
+
+        new ErrorPage(message).build();
+    }
+
+}
+
+class ErrorPage extends ContentPage {
+
+    public errorTpl: JQuery = $("<div>").html($("#errorTemplate").html());
+    public message = "";
+
+    constructor(errorMsg: string) {
+        super(null);
+        this.message = errorMsg;
+    }
+
+    public build() {
+        var clonedTpl = this.errorTpl.clone();
+
+        clonedTpl.find("#errorTextId").prepend("<p>" + this.message + "<p>");
+        this.contentDiv.empty().prepend(clonedTpl.html());
+    }
+
+}
+
 var main:Main;
 $(document).ready(() => {
 
     main = new Main();
     main.createTypeAhead();
     numeral.language('fr');
+    //main.pageBuilder.buildPage();
 });
 
