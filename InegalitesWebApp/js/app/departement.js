@@ -15,6 +15,7 @@ var DepPageBuilder = (function () {
         this.json = null;
         this.htmlLoaded = false;
         this.menu = null;
+        this.domDepName = $(".content-wrapper .departement__depName");
         this.htmlLoaded = htmlLoaded;
         var hash = window.location.hash;
         if (hash && hash.length > 0) {
@@ -58,6 +59,8 @@ var DepPageBuilder = (function () {
         });
     };
     DepPageBuilder.prototype.buildContentPage = function () {
+        this.domDepName.text(this.json.Nom);
+
         var contentPage;
 
         switch (this.pageName) {
@@ -69,6 +72,9 @@ var DepPageBuilder = (function () {
                 break;
             case "moyennes":
                 contentPage = new MoyennesPage(this.json);
+                break;
+            case "lorenz":
+                contentPage = new LorenzPage(this.json);
                 break;
             default:
                 contentPage = new ErrorPage("Page not found : " + this.pageName);
@@ -164,7 +170,6 @@ var IntroPage = (function (_super) {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.introTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
             for (var year = 2003; year <= 2012; year++) {
                 var clonedTableTpl = this.tableDepYearTpl.clone();
@@ -242,7 +247,6 @@ var GiniPage = (function (_super) {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.giniTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
 
@@ -272,7 +276,7 @@ var GiniPage = (function (_super) {
         };
 
         var options = {
-            width: '480px',
+            //width: '480px',
             height: '320px',
             axisY: {
                 labelInterpolationFnc: function (value) {
@@ -300,7 +304,6 @@ var MoyennesPage = (function (_super) {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.moyTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
 
@@ -331,7 +334,7 @@ var MoyennesPage = (function (_super) {
         };
 
         var options = {
-            width: '480px',
+            //  width: '480px',
             height: '320px'
         };
 
@@ -339,9 +342,82 @@ var MoyennesPage = (function (_super) {
         //As a first parameter we pass in a selector where we would like to get our chart created.
         //Second parameter is the actual data object and as a
         //third parameter we pass in our options
-        new Chartist.Line('.ct-chart', data, options);
+        new Chartist.Line('.ct-chart-moy', data, options);
     };
     return MoyennesPage;
+})(ContentPage);
+
+var LorenzPage = (function (_super) {
+    __extends(LorenzPage, _super);
+    function LorenzPage(json) {
+        _super.call(this, json);
+        this.lorenzTpl = $("<div>").html($("#depLorenzTemplate").html());
+        this.chartClass = '.ct-chart-lorenz';
+    }
+    LorenzPage.prototype.build = function () {
+        if (this.json) {
+            var json = this.json;
+            this.clonedTpl = this.lorenzTpl.clone();
+
+            this.createChart(this.json.Lorenz);
+
+            this.insertChart();
+        }
+    };
+
+    LorenzPage.prototype.createChart = function (lorenz) {
+        var labels = [];
+        var series = [[]];
+        series.push([]);
+        if (!this.year) {
+            this.year = "2012";
+        }
+
+        var lorenzCurve = lorenz[this.year];
+
+        for (var i = 0; i < lorenzCurve.length; i++) {
+            var x = (Math.round(lorenzCurve[i].Key * 100)).toFixed(1);
+            var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
+
+            labels.push(x);
+            series[0].push(y);
+
+            // seconde courbe : égalité parfaite
+            series[1].push(1 / lorenzCurve.length * i * 100);
+        }
+        series[1].push(100.0);
+
+        var valeurMiddle = Math.round(lorenzCurve.length / 2);
+        var lecturePop = (Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1);
+        var lectureRev = (Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1);
+
+        this.clonedTpl.find(".lecturePop").text(lecturePop);
+        this.clonedTpl.find(".lectureRev").text(lecturePop);
+
+        // Create a simple line chart
+        this.dataChart = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        this.optionsChart = {
+            width: '320px',
+            height: '320px'
+        };
+    };
+
+    LorenzPage.prototype.insertChart = function () {
+        this.contentDiv.empty().prepend(this.clonedTpl.html());
+
+        // In the global name space Chartist we call the Line function to initialize a line chart.
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-lorenz', this.dataChart, this.optionsChart);
+    };
+    return LorenzPage;
 })(ContentPage);
 
 $(document).ready(function () {

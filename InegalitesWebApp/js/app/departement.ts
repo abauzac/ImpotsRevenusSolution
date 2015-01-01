@@ -14,7 +14,7 @@ class DepPageBuilder implements IPageBuilder {
     public json: DepartementJSON = null;
     public htmlLoaded: boolean = false;
     public menu: MenuDepartement = null;
-
+    public domDepName = $(".content-wrapper .departement__depName");
 
     constructor(htmlLoaded: boolean) {
         this.htmlLoaded = htmlLoaded;
@@ -70,6 +70,8 @@ class DepPageBuilder implements IPageBuilder {
     }
     public buildContentPage() {
 
+        this.domDepName.text(this.json.Nom);
+
         var contentPage: ContentPage;
 
         switch (this.pageName) {
@@ -81,6 +83,9 @@ class DepPageBuilder implements IPageBuilder {
                 break;
             case "moyennes":
                 contentPage = new MoyennesPage(this.json);
+                break;
+            case "lorenz":
+                contentPage = new LorenzPage(this.json);
                 break;
             default:
                 contentPage = new ErrorPage("Page not found : " + this.pageName);
@@ -99,12 +104,12 @@ class MenuItem {
     public itemName: string = "";
     public depNumber: string = "";
     public pagetype: string = "";
-    public clickCallBack: (event:JQueryEventObject) => void;
+    public clickCallBack: (event: JQueryEventObject) => void;
     constructor() {
 
     }
 
-    public getFullDom():JQuery {
+    public getFullDom(): JQuery {
         var domItem = $("<a>");
 
         domItem.addClass("list-group-item");
@@ -124,11 +129,11 @@ class MenuDepartement {
     public depNumber: string = "";
     public items: JQuery = $([]);
 
-    constructor(depNumber:string) {
+    constructor(depNumber: string) {
         this.depNumber = depNumber;
     }
 
-    public addMenuItem(name: string, depnumber?: string, pageType?:string, clickcb?: (event: JQueryEventObject) => void) {
+    public addMenuItem(name: string, depnumber?: string, pageType?: string, clickcb?: (event: JQueryEventObject) => void) {
         var item = new MenuItem();
         item.itemName = name;
         item.depNumber = depnumber;
@@ -147,7 +152,7 @@ class MenuDepartement {
         //create Lorenz
         this.addMenuItem("Lorenz", this.depNumber, "lorenz", this.itemCallback);
         // create Moyennes
-        this.addMenuItem("Moyennes", this.depNumber , "moyennes", this.itemCallback);
+        this.addMenuItem("Moyennes", this.depNumber, "moyennes", this.itemCallback);
 
         this.domMenu.empty().append(this.items);
     }
@@ -162,7 +167,7 @@ class MenuDepartement {
         }
     }
 
-    public itemCallback(event:JQueryEventObject) {
+    public itemCallback(event: JQueryEventObject) {
         var linkElem = event.target;
         this.items.removeClass("active");
         (<HTMLElement>linkElem).classList.add("active");
@@ -172,7 +177,7 @@ class MenuDepartement {
 
 }
 
-class IntroPage extends ContentPage  {
+class IntroPage extends ContentPage {
     public introTpl: JQuery = $("<div>").html($("#depIntroTemplate").html());
     public tableDepYearTpl: JQuery = $("<div>").html($("#depIntroTableTemplate").html());
 
@@ -184,7 +189,6 @@ class IntroPage extends ContentPage  {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.introTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
 
             for (var year = 2003; year <= 2012; year++) {
@@ -256,7 +260,7 @@ class GiniPage extends ContentPage {
 
     public giniTpl = $("<div>").html($("#depGiniTemplate").html());
 
-    constructor(json:DepartementJSON) {
+    constructor(json: DepartementJSON) {
         super(json);
     }
 
@@ -265,7 +269,6 @@ class GiniPage extends ContentPage {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.giniTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
 
@@ -298,7 +301,7 @@ class GiniPage extends ContentPage {
         };
 
         var options = {
-            width: '480px',
+            //width: '480px',
             height: '320px',
             axisY: {
                 labelInterpolationFnc: function (value) {
@@ -320,7 +323,7 @@ class GiniPage extends ContentPage {
 
 class MoyennesPage extends ContentPage {
     public moyTpl = $("<div>").html($("#depMoyennesTemplate").html());
-    
+
     constructor(json: DepartementJSON) {
         super(json);
     }
@@ -329,7 +332,6 @@ class MoyennesPage extends ContentPage {
         if (this.json) {
             var json = this.json;
             var clonedIntroTpl = this.moyTpl.clone();
-            clonedIntroTpl.find(".departement__depName").prepend(json.Nom);
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
 
@@ -351,7 +353,7 @@ class MoyennesPage extends ContentPage {
 
                 }
             }
-           
+
         }
         // Create a simple line chart
         var data = {
@@ -362,7 +364,7 @@ class MoyennesPage extends ContentPage {
         };
 
         var options = {
-            width: '480px',
+            //  width: '480px',
             height: '320px'
         };
 
@@ -371,7 +373,86 @@ class MoyennesPage extends ContentPage {
         //As a first parameter we pass in a selector where we would like to get our chart created.
         //Second parameter is the actual data object and as a 
         //third parameter we pass in our options
-        new Chartist.Line('.ct-chart', data, options);
+        new Chartist.Line('.ct-chart-moy', data, options);
+    }
+}
+
+
+class LorenzPage extends ContentPage {
+    public lorenzTpl = $("<div>").html($("#depLorenzTemplate").html());
+    public clonedTpl;
+    public year;
+    public chartClass = '.ct-chart-lorenz';
+    public dataChart;
+    public optionsChart;
+    constructor(json: DepartementJSON) {
+        super(json);
+    }
+
+    public build() {
+        if (this.json) {
+            var json = this.json;
+            this.clonedTpl = this.lorenzTpl.clone();
+
+
+            this.createChart(this.json.Lorenz);
+
+            this.insertChart()
+        }
+    }
+
+    private createChart(lorenz: any) {
+        var labels = [];
+        var series = [[]];
+        series.push([]);
+        if (!this.year) {
+            this.year = "2012";
+        }
+
+        var lorenzCurve: any[] = lorenz[this.year];
+
+        for (var i = 0; i < lorenzCurve.length; i++) {
+            var x = (Math.round(lorenzCurve[i].Key * 100) ).toFixed(1);
+            var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
+
+            labels.push(x);
+            series[0].push(y);
+            // seconde courbe : égalité parfaite
+            series[1].push(1/lorenzCurve.length * i *100);
+
+        }
+        series[1].push(100.0);
+
+        var valeurMiddle = Math.round(lorenzCurve.length / 2);
+        var lecturePop = (Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1);
+        var lectureRev = (Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1);
+
+        this.clonedTpl.find(".lecturePop").text(lecturePop);
+        this.clonedTpl.find(".lectureRev").text(lecturePop);
+        // Create a simple line chart
+        this.dataChart = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        this.optionsChart = {
+            width: '320px',
+            height: '320px'
+        };
+
+
+    }
+
+    public insertChart() {
+
+        this.contentDiv.empty().prepend(this.clonedTpl.html());
+        // In the global name space Chartist we call the Line function to initialize a line chart. 
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a 
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-lorenz', this.dataChart, this.optionsChart);
     }
 }
 

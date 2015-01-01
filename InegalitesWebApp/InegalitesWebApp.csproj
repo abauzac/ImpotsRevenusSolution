@@ -150,6 +150,7 @@
     <Content Include="js\libs\npm.js" />
     <Content Include="js\libs\numeral.js" />
     <Content Include="js\libs\typeahead.js" />
+    <Content Include="resources\img\giniformula.png" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
     </Content>

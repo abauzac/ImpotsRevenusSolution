@@ -41,14 +41,17 @@
 
         <div class="row">
             <!-- LEFT MENU -->
-            <div class="menugauche list-group col-sm-3 col-md-2">
-                <a class="list-group-item" href="#">lsit1</a>
-                <a class="list-group-item" href="#">lsit1</a>
+            <div class="menugauche list-group col-md-2 hidden-xs">
             </div>
             <!-- MIDDLE CONTENT -->
-            <div class="content col-sm-9 col-md-10">
-                <div id="contentDiv">
+            <div class="content col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title departement__depName"></h3>
+                    </div>
+                    <div id="contentDiv" class="panel-body">
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,7 +84,6 @@
     </script>
 
     <script id="depIntroTemplate" type="text/html">
-        <h2 class="departement__depName"></h2>
         <h4>Recapitulatifs des chiffres du département <span>(données brutes)</span></h4>
         <p>Ces chiffres sont ceux fournis par le site <a href="https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/">data.gouv.fr</a></p>
         <br />
@@ -127,33 +129,153 @@
 
     </script>
 
+    <!-- GINI -->
 
     <script id="depGiniTemplate" type="text/html">
-        <h2 class="departement__depName"></h2>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart"></div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Coefficient de Gini</h3>
+                        </div>
+                        <div class="panel-body">
+                            Le coefficient de Gini est un nombre variant de 0 à 1, où 0 signifie l'égalité parfaite et 1 signifie l'inégalité totale.
+                            Ce coefficient est très utilisé pour mesurer l'inégalité des revenus dans un pays.
+                            <br />
+                            Indice calculé par la formule :
+                            <img src="resources/img/giniformula.png" alt="Formule du coefficient de Gini" />
+                            <br />
+                            (Image wikimedia)
+                            <br/><br/>
+                            Avec : 
+                            <ul>
+                                <li>X = Part cumulée de la population</li>
+                                <li>Y = Part cumulée des revenus</li>
+                            </ul>
+                        </div>
 
-        <div>
-            Le coefficient de Gini est un nombre variant de 0 à 1, où 0 signifie l'égalité parfaite et 1 signifie l'inégalité totale.
-            Ce coefficient est très utilisé pour mesurer l'inégalité des revenus dans un pays.
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Le coefficient de Gini ne permet pas de montrer une situation de pauvreté mais bien d'inégalité.
+                            Une population peut être parfaitement égalitaire mais pauvre.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Chartist.js -->
-        <div class="chart-gini ct-chart"></div>
-
     </script>
 
+    <!-- MOYENNES -->
+
     <script id="depMoyennesTemplate" type="text/html">
-        <h2 class="departement__depName"></h2>
-        <div class="panel">
-            <div class="lead">
-                Evolution de la moyenne des revenus / habitants dans le département (non corrigée de l'inflation)
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-moy"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolution de la moyenne des revenus / habitants dans le département </h3>
+                        </div>
+                        <div class="panel-body">
+                            (non corrigée de l'inflation)
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="bg-info">
-                Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
-                augmente nécessairement les revenus (et fausse le graphique).
+            <hr class="divider" />
+            <!-- CORRECTION INFLATION-->
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart-infla"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolution de la moyenne des revenus / habitants dans le département </h3>
+                        </div>
+                        <div class="panel-body">
+                            (non corrigée de l'inflation)
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Chartist.js -->
-        <div class="chart-gini ct-chart"></div>
+    </script>
 
+    <!-- LORENZ -->
+
+    <script id="depLorenzTemplate" type="text/html">
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <ul>
+                    <li>2013</li>
+                </ul>
+                <div class="col-sm-6 ct-chart ct-chart-lorenz"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Courbe de Lorenz du département département </h3>
+                        </div>
+                        <div class="panel-body">
+                            Explication
+                            <ul>
+                                <li>Abscisse : part cumulée de la population</li>
+                                <li>Ordonnée : part cumulée des revenus</li>
+                            </ul>
+                            Lecture :<br/>
+                            <em>"<span class="lecturePop"></span>% de la population la moins riche perçoit <span class="lectureRev"></span>% des revenus totaux"</em>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </script>
 
 </body>
