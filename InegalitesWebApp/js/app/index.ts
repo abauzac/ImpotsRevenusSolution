@@ -64,7 +64,7 @@ class Main {
 
     public createTypeAhead() {
         var domInput = $("#searchDepartements");
-        domInput.typeahead(
+        (<any>domInput).typeahead(
             {
                 hint: true,
                 highlight: true,

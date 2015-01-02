@@ -1,4 +1,5 @@
-﻿using ImpotRevenuParser.model;
+﻿using ComputeDataImpotsRevenus.Model;
+using ImpotRevenuParser.model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,11 @@ namespace ComputeDataImpotsRevenus
             return averageForEachYear;
         }
 
-        public Dictionary<string, List<KeyValuePair<decimal, decimal>>> cumulLorenz()
+        public LorenzData cumulLorenz()
         {
+            LorenzData ldata = new LorenzData();
+
+            // calcul par tranche
             Dictionary<string, List<KeyValuePair<decimal, decimal>>> lorenzCurvesEachYear = new Dictionary<string, List<KeyValuePair<decimal, decimal>>>();
 
             foreach (Departement dep in everyYearsForCurrentDepartement)
@@ -76,7 +80,58 @@ namespace ComputeDataImpotsRevenus
 
             }
 
-            return lorenzCurvesEachYear;
+            ldata.LorenzTranches = lorenzCurvesEachYear;
+            // calcul par interpolation linéaire : 10 deciles
+
+            Dictionary<string, List<KeyValuePair<decimal, decimal>>> lorenzDecilesEachYear = new Dictionary<string, List<KeyValuePair<decimal, decimal>>>();
+
+            foreach (string year in lorenzCurvesEachYear.Keys)
+            {
+                List<KeyValuePair<decimal, decimal>> lorCurve = lorenzCurvesEachYear[year];
+
+                List<KeyValuePair<decimal, decimal>> lorenzDeciles = new List<KeyValuePair<decimal, decimal>>();
+                lorenzDeciles.Add(new KeyValuePair<decimal, decimal>(new decimal(0), new decimal(0)));
+
+                decimal x = new decimal(.05);
+                // loop sur les coordonnées d'une année
+                // x sera la valeur incrémentée pour l'interpolation, on commence a 5% car 
+
+                // y = ax + b
+                // a = (y2 - y1) / (x2 - x1)
+                // b = y1 - a*x1 = y2 - a*x2
+                KeyValuePair<decimal, decimal> previousCoord = new KeyValuePair<decimal,decimal>();
+                foreach (KeyValuePair<decimal, decimal> currentCoord in lorCurve)
+                {
+                    decimal lorenzX = currentCoord.Key * 100;
+                    decimal a = new decimal(0);
+                    decimal b = new decimal(0);
+
+                    if (currentCoord.Key != 0) // previous coord existe : transposition de fonction affine
+                    {
+                        a = (currentCoord.Value - previousCoord.Value) / (currentCoord.Key - previousCoord.Value);
+                        b = currentCoord.Value - a * currentCoord.Key;
+                        //Console.WriteLine("a = " + a + ", b = " + b);
+                    }
+
+
+                    while (x < currentCoord.Key) 
+                    {
+                        decimal y = a * x + b;
+                        //Console.WriteLine("x = " + x + ", y = " + y);
+                        lorenzDeciles.Add(new KeyValuePair<decimal,decimal>(x, Math.Round(y, 4, MidpointRounding.ToEven)));
+                        x += new decimal(0.05);
+                    }
+
+                    previousCoord = currentCoord;
+
+                }
+
+                lorenzDecilesEachYear.Add(year, lorenzDeciles);
+            }
+
+            ldata.LorenzDeciles = lorenzDecilesEachYear;
+
+            return ldata;
             
         }
 
@@ -86,7 +141,7 @@ namespace ComputeDataImpotsRevenus
             // X = part cumulé de la population
             // Y = par du revenu
 
-            Dictionary<string, List<KeyValuePair<decimal, decimal>>> lorenzCurvesEachYear = this.cumulLorenz();
+            Dictionary<string, List<KeyValuePair<decimal, decimal>>> lorenzCurvesEachYear = this.cumulLorenz().LorenzTranches;
 
             Dictionary<string, decimal> giniEachYear = new Dictionary<string, decimal>();
 

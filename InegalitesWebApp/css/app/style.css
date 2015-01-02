@@ -54,4 +54,7 @@ a:focus {
 .tt-suggestions .tt-suggestion:hover {
   background-color: #fafafa;
 }
+.lorenz__dropdown {
+  display: inline-block;
+}
 /*# sourceMappingURL=style.css.map */

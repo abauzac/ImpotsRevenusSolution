@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\DepartementData.cs" />
+    <Compile Include="Model\LorenzData.cs" />
     <Compile Include="Serializer\DepartementDeserializer.cs" />
     <Compile Include="Processors\DepartementProcessor.cs" />
     <Compile Include="Program.cs" />

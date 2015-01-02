@@ -36,10 +36,15 @@ class DepartementYear {
 
 }
 
+class LorenzJSON {
+    public LorenzDeciles: any;
+    public LorenzTranches: any;
+}
+
 class DepartementJSON {
 
     public Gini: any;
-    public Lorenz: any;
+    public Lorenz: LorenzJSON;
     public Numero: any;
     public Moyennes: any;
     public Nom: any;

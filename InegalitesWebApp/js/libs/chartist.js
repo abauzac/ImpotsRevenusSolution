@@ -489,6 +489,9 @@
          * @param {Boolean} supportsForeignObject If this is true then a foreignObject will be used instead of a text element
          */
         Chartist.createXAxis = function (chartRect, data, grid, labels, options, eventEmitter, supportsForeignObject) {
+
+            var arrayPositions = [];
+
             // Create X-Axis
             data.labels.forEach(function (value, index) {
                 var interpolatedValue = options.axisX.labelInterpolationFnc(value, index),
@@ -496,6 +499,13 @@
                   height = options.axisX.offset,
                   pos = chartRect.x1 + width * index;
 
+                if (options.scaleAxis) {
+                    
+                    // lastData should be the highest value of the labels array
+                    var lastData = parseInt(data.labels[data.labels.length - 1]);
+                    pos = chartRect.x1 + parseInt(value) / lastData * chartRect.width();
+                }
+                arrayPositions.push(pos);
                 // If interpolated value returns falsey (except 0) we don't draw the grid line
                 if (!interpolatedValue && interpolatedValue !== 0) {
                     return;
@@ -556,6 +566,7 @@
                     });
                 }
             });
+            return arrayPositions;
         };
 
         /**
@@ -651,9 +662,16 @@
          * @param {Object} options The chart options that are used to influence the calculations
          * @return {Object} The coordinates object of the current project point containing an x and y number property
          */
-        Chartist.projectPoint = function (chartRect, bounds, data, index, options) {
+        Chartist.projectPoint = function (chartRect, bounds, data, index, options, XAxisPositions) {
+
+            var x = chartRect.x1 + chartRect.width() / (data.length - (data.length > 1 && options.fullWidth ? 1 : 0)) * index;
+
+            if (options.scaleAxis && XAxisPositions != null && XAxisPositions.length >= index) {
+                x = XAxisPositions[index];
+            }
+
             return {
-                x: chartRect.x1 + chartRect.width() / (data.length - (data.length > 1 && options.fullWidth ? 1 : 0)) * index,
+                x: x,
                 y: chartRect.y1 - chartRect.height() * (data[index] - bounds.min) / (bounds.range + bounds.step)
             };
         };
@@ -1854,6 +1872,10 @@
                 // This value specifies the minimum height in pixel of the scale steps
                 scaleMinSpace: 20
             },
+
+            // Scale the axis to the values. We suppose that the values are sorted and are number
+            scaleAxis:false,
+
             // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
             width: undefined,
             // Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
@@ -1912,7 +1934,7 @@
             var labels = this.svg.elem('g').addClass(options.classNames.labelGroup),
               grid = this.svg.elem('g').addClass(options.classNames.gridGroup);
 
-            Chartist.createXAxis(chartRect, this.data, grid, labels, options, this.eventEmitter, this.supportsForeignObject);
+            var XAxisPositions = Chartist.createXAxis(chartRect, this.data, grid, labels, options, this.eventEmitter, this.supportsForeignObject);
             Chartist.createYAxis(chartRect, bounds, grid, labels, options, this.eventEmitter, this.supportsForeignObject);
 
             // Draw the series
@@ -1938,7 +1960,7 @@
                   point;
 
                 for (var j = 0; j < normalizedData[i].length; j++) {
-                    p = Chartist.projectPoint(chartRect, bounds, normalizedData[i], j, options);
+                    p = Chartist.projectPoint(chartRect, bounds, normalizedData[i], j, options, XAxisPositions);
                     pathCoordinates.push(p.x, p.y);
 
                     //If we should show points we need to create them now to avoid secondary loop

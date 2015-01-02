@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ImpotRevenuParser.model;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace ComputeDataImpotsRevenus.Model
 
         public Dictionary<string, decimal> Gini;
 
-        public Dictionary<string, List<KeyValuePair<decimal, decimal>>> Lorenz;
+        public LorenzData Lorenz;
 
         public Dictionary<string, decimal> Moyennes;
 
@@ -43,6 +44,6 @@ namespace ComputeDataImpotsRevenus.Model
 
         public string Nom { get; set; }
 
-        public Dictionary<int, ImpotRevenuParser.model.Departement> Data { get; set; }
+        public Dictionary<int, Departement> Data { get; set; }
     }
 }

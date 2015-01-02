@@ -376,7 +376,7 @@ class MoyennesPage extends ContentPage {
         new Chartist.Line('.ct-chart-moy', data, options);
     }
 }
-
+declare var Chartist;
 
 class LorenzPage extends ContentPage {
     public lorenzTpl = $("<div>").html($("#depLorenzTemplate").html());
@@ -392,7 +392,7 @@ class LorenzPage extends ContentPage {
     public build() {
         if (this.json) {
             var json = this.json;
-            this.clonedTpl = this.lorenzTpl.clone();
+            
 
 
             this.createChart(this.json.Lorenz);
@@ -401,34 +401,37 @@ class LorenzPage extends ContentPage {
         }
     }
 
-    private createChart(lorenz: any) {
+    private createChart(lorenz: LorenzJSON) {
+        this.clonedTpl = this.lorenzTpl.clone();
         var labels = [];
         var series = [[]];
-        series.push([]);
+        //series.push([]);
         if (!this.year) {
             this.year = "2012";
         }
 
-        var lorenzCurve: any[] = lorenz[this.year];
+        var lorenzTranches = lorenz.LorenzTranches;
+        var lorenzDeciles = lorenz.LorenzDeciles;
+
+
+        var lorenzCurve: any[] = lorenzTranches[this.year];
 
         for (var i = 0; i < lorenzCurve.length; i++) {
-            var x = (Math.round(lorenzCurve[i].Key * 100) ).toFixed(1);
-            var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
+            var x = (Math.round(lorenzCurve[i].Key * 100));
+                x = <any>x.toFixed(1);
+                var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
 
-            labels.push(x);
-            series[0].push(y);
-            // seconde courbe : égalité parfaite
-            series[1].push(1/lorenzCurve.length * i *100);
+                labels.push(x);
+                series[0].push(y);
+            
 
         }
-        series[1].push(100.0);
-
         var valeurMiddle = Math.round(lorenzCurve.length / 2);
         var lecturePop = (Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1);
         var lectureRev = (Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1);
 
         this.clonedTpl.find(".lecturePop").text(lecturePop);
-        this.clonedTpl.find(".lectureRev").text(lecturePop);
+        this.clonedTpl.find(".lectureRev").text(lectureRev);
         // Create a simple line chart
         this.dataChart = {
             // A labels array that can contain any sort of values
@@ -439,7 +442,13 @@ class LorenzPage extends ContentPage {
 
         this.optionsChart = {
             width: '320px',
-            height: '320px'
+            height: '320px',
+            axisY: {
+                labelOffset: {
+                    y: 10
+                }
+            },
+            scaleAxis:true
         };
 
 

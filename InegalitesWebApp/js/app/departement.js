@@ -357,7 +357,6 @@ var LorenzPage = (function (_super) {
     LorenzPage.prototype.build = function () {
         if (this.json) {
             var json = this.json;
-            this.clonedTpl = this.lorenzTpl.clone();
 
             this.createChart(this.json.Lorenz);
 
@@ -366,33 +365,34 @@ var LorenzPage = (function (_super) {
     };
 
     LorenzPage.prototype.createChart = function (lorenz) {
+        this.clonedTpl = this.lorenzTpl.clone();
         var labels = [];
         var series = [[]];
-        series.push([]);
+
+        //series.push([]);
         if (!this.year) {
             this.year = "2012";
         }
 
-        var lorenzCurve = lorenz[this.year];
+        var lorenzTranches = lorenz.LorenzTranches;
+        var lorenzDeciles = lorenz.LorenzDeciles;
+
+        var lorenzCurve = lorenzTranches[this.year];
 
         for (var i = 0; i < lorenzCurve.length; i++) {
-            var x = (Math.round(lorenzCurve[i].Key * 100)).toFixed(1);
+            var x = (Math.round(lorenzCurve[i].Key * 100));
+            x = x.toFixed(1);
             var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
 
             labels.push(x);
             series[0].push(y);
-
-            // seconde courbe : égalité parfaite
-            series[1].push(1 / lorenzCurve.length * i * 100);
         }
-        series[1].push(100.0);
-
         var valeurMiddle = Math.round(lorenzCurve.length / 2);
         var lecturePop = (Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1);
         var lectureRev = (Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1);
 
         this.clonedTpl.find(".lecturePop").text(lecturePop);
-        this.clonedTpl.find(".lectureRev").text(lecturePop);
+        this.clonedTpl.find(".lectureRev").text(lectureRev);
 
         // Create a simple line chart
         this.dataChart = {
@@ -404,7 +404,13 @@ var LorenzPage = (function (_super) {
 
         this.optionsChart = {
             width: '320px',
-            height: '320px'
+            height: '320px',
+            axisY: {
+                labelOffset: {
+                    y: 10
+                }
+            },
+            scaleAxis: true
         };
     };
 
