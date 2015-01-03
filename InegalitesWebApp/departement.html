@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="css/libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/libs/chartist.css" rel="stylesheet">
+    <link href="css/app/style.css" rel="stylesheet" />
+
+
+</head>
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-fixed-top">
+
+        <div class="navigationbar container">
+            <div class="navbar-header">
+                <a class="navbar-brand">Les revenus en France</a>
+            </div>
+
+            <ul class="nav navbar-nav ">
+                <li><a href="#">Les cartes</a></li>
+            </ul>
+            <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                    <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
+
+                </div>
+            </form>
+        </div>
+
+    </nav>
+    <!-- /header -->
+
+    <div class="content-wrapper container-fluid">
+
+        <div class="row">
+            <!-- LEFT MENU -->
+            <div class="menugauche list-group col-md-2 hidden-xs">
+            </div>
+            <!-- MIDDLE CONTENT -->
+            <div class="content col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title departement__depName"></h3>
+                    </div>
+                    <div id="contentDiv" class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Load libs -->
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/typeahead.js"></script>
+    <script src="js/libs/chartist.js"></script>
+    <script src="js/libs/numeral.js"></script>
+    <script src="js/libs/numeral.fr.js"></script>
+
+    <!-- Load app javascript-->
+    <script src="js/app/index.js"></script>
+    <script src="js/app/departement.js"></script>
+
+    <!-- Load templates -->
+
+    <script id="errorTemplate" type="text/html">
+        <div class="panel-group">
+            <h2>
+                Oups ! Une erreur est survenue !
+            </h2>
+            <div class="alert alert-danger">
+                Erreur : <span id="errorTextId"></span>
+            </div>
+        </div>
+    </script>
+
+    <script id="depIntroTemplate" type="text/html">
+        <h4>Recapitulatifs des chiffres du département <span>(données brutes)</span></h4>
+        <p>Ces chiffres sont ceux fournis par le site <a href="https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/">data.gouv.fr</a></p>
+        <br />
+        <div class="departement-intro__table-container"></div>
+
+    </script>
+
+    <script id="depIntroTableTemplate" type="text/html">
+        <div class="panel panel-default">
+            <div class="panel-heading intro-table__year"></div>
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="intro-table__thead-top">
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="2"><small>Traitements et salaires</small></th>
+                            <th colspan="2"><small>Retraites et pensions</th>
+                        </tr>
+                        <tr class="intro-table__thead-bottom">
+                            <th><small>Tranches (€)</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Revenus</small></th>
+                            <th><small>Impôt Net</small></th>
+                            <th><small>Foyers Imposables</small></th>
+                            <th><small>Revenus imposables</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Montant</small></th>
+                            <th><small>Foyers</small></th>
+                            <th><small>Montant</small></th>
+                        </tr>
+                    </thead>
+                    <tbody class="intro-table__tbody"></tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+    </script>
+
+    <!-- GINI -->
+
+    <script id="depGiniTemplate" type="text/html">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart"></div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Coefficient de Gini</h3>
+                        </div>
+                        <div class="panel-body">
+                            Le coefficient de Gini est un nombre variant de 0 à 1, où 0 signifie l'égalité parfaite et 1 signifie l'inégalité totale.
+                            Ce coefficient est très utilisé pour mesurer l'inégalité des revenus dans un pays.
+                            <br />
+                            Indice calculé par la formule :
+                            <img src="resources/img/giniformula.png" alt="Formule du coefficient de Gini" />
+                            <br />
+                            (Image wikimedia)
+                            <br/><br/>
+                            Avec : 
+                            <ul>
+                                <li>X = Part cumulée de la population</li>
+                                <li>Y = Part cumulée des revenus</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Le coefficient de Gini ne permet pas de montrer une situation de pauvreté mais bien d'inégalité.
+                            Une population peut être parfaitement égalitaire mais pauvre.
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- MOYENNES -->
+
+    <script id="depMoyennesTemplate" type="text/html">
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-moy"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolution de la moyenne des revenus / habitants dans le département </h3>
+                        </div>
+                        <div class="panel-body">
+                            (non corrigée de l'inflation)
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <hr class="divider" />
+            <!-- CORRECTION INFLATION-->
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart-infla"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolution de la moyenne des revenus / habitants dans le département </h3>
+                        </div>
+                        <div class="panel-body">
+                            (non corrigée de l'inflation)
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- LORENZ -->
+
+    <script id="depLorenzTemplate" type="text/html">
+
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6">
+                    <div class="lorenz__dropdown">
+                        <div class="dropdown ">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                                Année
+                                <span class="caret"></span>
+                            </button>
+                            <ul id="dropDownLorenzYears" class="dropdown-menu" role="menu" aria-labelledby="DropDown menu for years">
+
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="ct-chart ct-chart-lorenz"></div>
+                    
+                </div>
+               
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Courbe de Lorenz du département département </h3>
+                        </div>
+                        <div class="panel-body">
+                            Explication
+                            <ul>
+                                <li>Abscisse : part cumulée de la population</li>
+                                <li>Ordonnée : part cumulée des revenus</li>
+                            </ul>
+                            Lecture :<br/>
+                            <em>"<span class="lecturePop"></span>% de la population la moins riche perçoit <span class="lectureRev"></span>% des revenus totaux"</em>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
+                            augmente nécessairement les revenus (et fausse le graphique).
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+
+</body>
+</html>

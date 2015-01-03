@@ -1,0 +1,60 @@
+﻿/* GLOBAL APP */
+a:focus {
+  outline: none;
+}
+.navigationbar.container {
+  background-color: #eee;
+  border-radius: 0 0 8px 8px;
+}
+.nav.navbar-nav {
+  margin-left: 3em;
+}
+.nav > li > a {
+  margin: 5px 0;
+  padding: 10px 15px;
+  border-radius: 7px;
+  color: black;
+  font-size: 16px;
+  transition: all ease-in 0.2s;
+}
+.nav > li > a:hover,
+.nav > li > a:focus {
+  background-color: #ddd;
+  color: #808080;
+}
+.content-wrapper {
+  margin-top: 100px;
+  width: 98%;
+}
+.menugauche {
+  box-shadow: none;
+}
+.content {
+  min-height: 8em;
+}
+.tt-dropdown-menu {
+  width: 210px;
+  margin-top: 12px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.tt-suggestions {
+  padding: 0.5em;
+}
+.tt-suggestions .tt-suggestion {
+  font-size: 13px;
+}
+.tt-suggestions .tt-suggestion:hover {
+  background-color: #fafafa;
+}
+.lorenz__dropdown {
+  display: inline-block;
+}
+/*# sourceMappingURL=style.css.map */
