@@ -500,7 +500,7 @@
                   pos = chartRect.x1 + width * index;
 
                 if (options.scaleAxis) {
-                    
+
                     // lastData should be the highest value of the labels array
                     var lastData = parseInt(data.labels[data.labels.length - 1]);
                     pos = chartRect.x1 + parseInt(value) / lastData * chartRect.width();
@@ -1874,7 +1874,7 @@
             },
 
             // Scale the axis to the values. We suppose that the values are sorted and are number
-            scaleAxis:false,
+            scaleAxis: false,
 
             // Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
             width: undefined,

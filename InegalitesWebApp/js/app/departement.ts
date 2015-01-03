@@ -380,11 +380,12 @@ declare var Chartist;
 
 class LorenzPage extends ContentPage {
     public lorenzTpl = $("<div>").html($("#depLorenzTemplate").html());
-    public clonedTpl;
+    public clonedTpl: JQuery;
     public year;
     public chartClass = '.ct-chart-lorenz';
     public dataChart;
     public optionsChart;
+    public chartist;
     constructor(json: DepartementJSON) {
         super(json);
     }
@@ -392,15 +393,25 @@ class LorenzPage extends ContentPage {
     public build() {
         if (this.json) {
             var json = this.json;
-            
-
 
             this.createChart(this.json.Lorenz);
-
-            this.insertChart()
+            this.updateTexts(this.json.Lorenz);
+            this.insertChart();
         }
     }
 
+    private updateTexts(lorenz) {
+        var lorenzCurve: any[] = lorenz.LorenzTranches[this.year];
+        var valeurMiddle = Math.round(lorenzCurve.length / 2);
+        if (!this.chartist) {
+            this.clonedTpl.find(".lecturePop").text((Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1));
+            this.clonedTpl.find(".lectureRev").text((Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1));
+        } else {
+            this.contentDiv.find(".lecturePop").text((Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1));
+            this.contentDiv.find(".lectureRev").text((Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1));
+        }
+
+    }
     private createChart(lorenz: LorenzJSON) {
         this.clonedTpl = this.lorenzTpl.clone();
         var labels = [];
@@ -410,28 +421,19 @@ class LorenzPage extends ContentPage {
             this.year = "2012";
         }
 
-        var lorenzTranches = lorenz.LorenzTranches;
-        var lorenzDeciles = lorenz.LorenzDeciles;
+        if(!this.chartist)
+            this.buildDropDown(lorenz.LorenzTranches);
 
+        var lorenzCurve: any[] = lorenz.LorenzTranches[this.year];
 
-        var lorenzCurve: any[] = lorenzTranches[this.year];
-
-        for (var i = 0; i < lorenzCurve.length; i++) {
-            var x = (Math.round(lorenzCurve[i].Key * 100));
-                x = <any>x.toFixed(1);
-                var y = (Math.round(lorenzCurve[i].Value * 100)).toFixed(1);
-
-                labels.push(x);
-                series[0].push(y);
+        for (var i = 0, j = lorenzCurve.length; i < j; i++) {
             
-
+            labels.push((Math.round(lorenzCurve[i].Key * 100)).toFixed(1));
+            series[0].push((Math.round(lorenzCurve[i].Value * 100)).toFixed(1));
         }
-        var valeurMiddle = Math.round(lorenzCurve.length / 2);
-        var lecturePop = (Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1);
-        var lectureRev = (Math.round(lorenzCurve[valeurMiddle].Value * 100)).toFixed(1);
+       
+        
 
-        this.clonedTpl.find(".lecturePop").text(lecturePop);
-        this.clonedTpl.find(".lectureRev").text(lectureRev);
         // Create a simple line chart
         this.dataChart = {
             // A labels array that can contain any sort of values
@@ -448,20 +450,54 @@ class LorenzPage extends ContentPage {
                     y: 10
                 }
             },
-            scaleAxis:true
+            scaleAxis: true
         };
+        lorenzCurve = null;
+
+    }
+
+    public buildDropDown(trancheEveryYears) {
+        var ulDropDown = this.clonedTpl.find("#dropDownLorenzYears");
+        //  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
+
+        for (var year in trancheEveryYears) {
+            var dom = document.createElement("a");
+            dom.setAttribute("role", "menuitem");
+            dom.setAttribute("tabindex", "-1");
+            dom.setAttribute("data-year", "" + year);
+            dom.setAttribute("href", "#" + this.json.Numero + "-lorenz");
+            dom.textContent = year;
+
+            var li = document.createElement("li");
+
+            li.appendChild(dom);
+
+            ulDropDown[0].appendChild(li);
+        }
 
 
+        this.contentDiv.on("click", "#dropDownLorenzYears a", this.clickDropDown.bind(this));
+    }
+
+    public clickDropDown(event: JQueryEventObject) {
+        this.year = $(event.target).attr("data-year");
+        this.build();
     }
 
     public insertChart() {
 
-        this.contentDiv.empty().prepend(this.clonedTpl.html());
+       
+
         // In the global name space Chartist we call the Line function to initialize a line chart. 
         //As a first parameter we pass in a selector where we would like to get our chart created.
         //Second parameter is the actual data object and as a 
         //third parameter we pass in our options
-        new Chartist.Line('.ct-chart-lorenz', this.dataChart, this.optionsChart);
+        if (!this.chartist) {
+            this.contentDiv.empty().prepend(this.clonedTpl.html());
+            this.chartist = new Chartist.Line('.ct-chart-lorenz', this.dataChart, this.optionsChart);
+        } else {
+            this.chartist.update(this.dataChart);
+        }
     }
 }
 
