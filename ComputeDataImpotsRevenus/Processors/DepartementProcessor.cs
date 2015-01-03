@@ -63,17 +63,17 @@ namespace ComputeDataImpotsRevenus
             {
 
                 List<KeyValuePair<decimal, decimal>> lorenzCurve = new List<KeyValuePair<decimal, decimal>>();
-                lorenzCurve.Add(new KeyValuePair<decimal,decimal>(new decimal(0),new decimal(0)));
+                lorenzCurve.Add(new KeyValuePair<decimal, decimal>(new decimal(0), new decimal(0)));
                 decimal previousPopulationProp = new Decimal(0);
                 decimal previousRevenuProp = new Decimal(0);
-                
+
 
                 foreach (Tranche tranche in dep.tranches)
                 {
-                    previousRevenuProp = Math.Round((decimal) tranche.revenus / (decimal)dep.revenus + previousRevenuProp, 5, MidpointRounding.ToEven);
+                    previousRevenuProp = Math.Round((decimal)tranche.revenus / (decimal)dep.revenus + previousRevenuProp, 5, MidpointRounding.ToEven);
                     previousPopulationProp = Math.Round((decimal)tranche.nbFoyers / (decimal)dep.nbFoyers + previousPopulationProp, 5, MidpointRounding.ToEven);
 
-                    lorenzCurve.Add(new KeyValuePair<decimal,decimal>(previousPopulationProp, previousRevenuProp));
+                    lorenzCurve.Add(new KeyValuePair<decimal, decimal>(previousPopulationProp, previousRevenuProp));
                 }
 
                 lorenzCurvesEachYear.Add(dep.year.ToString(), lorenzCurve);
@@ -99,7 +99,7 @@ namespace ComputeDataImpotsRevenus
                 // y = ax + b
                 // a = (y2 - y1) / (x2 - x1)
                 // b = y1 - a*x1 = y2 - a*x2
-                KeyValuePair<decimal, decimal> previousCoord = new KeyValuePair<decimal,decimal>();
+                KeyValuePair<decimal, decimal> previousCoord = new KeyValuePair<decimal, decimal>();
                 foreach (KeyValuePair<decimal, decimal> currentCoord in lorCurve)
                 {
                     decimal lorenzX = currentCoord.Key * 100;
@@ -108,17 +108,20 @@ namespace ComputeDataImpotsRevenus
 
                     if (currentCoord.Key != 0) // previous coord existe : transposition de fonction affine
                     {
-                        a = (currentCoord.Value - previousCoord.Value) / (currentCoord.Key - previousCoord.Value);
-                        b = currentCoord.Value - a * currentCoord.Key;
+                        if (currentCoord.Key - previousCoord.Key != 0)
+                        {
+                            a = (currentCoord.Value - previousCoord.Value) / (currentCoord.Key - previousCoord.Key);
+                            b = currentCoord.Value - a * currentCoord.Key;
+                        }
                         //Console.WriteLine("a = " + a + ", b = " + b);
                     }
 
 
-                    while (x < currentCoord.Key) 
+                    while (x < currentCoord.Key)
                     {
                         decimal y = a * x + b;
                         //Console.WriteLine("x = " + x + ", y = " + y);
-                        lorenzDeciles.Add(new KeyValuePair<decimal,decimal>(x, Math.Round(y, 4, MidpointRounding.ToEven)));
+                        lorenzDeciles.Add(new KeyValuePair<decimal, decimal>(x, Math.Round(y, 4, MidpointRounding.ToEven)));
                         x += new decimal(0.05);
                     }
 
@@ -132,7 +135,7 @@ namespace ComputeDataImpotsRevenus
             ldata.LorenzDeciles = lorenzDecilesEachYear;
 
             return ldata;
-            
+
         }
 
         public Dictionary<string, decimal> calculerGini()
@@ -157,7 +160,7 @@ namespace ComputeDataImpotsRevenus
 
                 foreach (KeyValuePair<decimal, decimal> kvp in lorenzCurve)
                 {
-                    if (keyPosition == numberOfKeys-1)
+                    if (keyPosition == numberOfKeys - 1)
                         break;
 
                     decimal partCumulPopulation = kvp.Key;

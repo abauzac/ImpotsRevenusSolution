@@ -104,8 +104,8 @@
                             <th></th>
                             <th></th>
                             <th></th>
-                            <th colspan="2"><small>Traitements et salaires</small></th>
-                            <th colspan="2"><small>Retraites et pensions</th>
+                            <th colspan="2"><small>Traitements/salaires</small></th>
+                            <th colspan="2"><small>Retraites/pensions</th>
                         </tr>
                         <tr class="intro-table__thead-bottom">
                             <th><small>Tranches (€)</small></th>
@@ -208,14 +208,21 @@
             <!-- CORRECTION INFLATION-->
             <div class="row">
                 <!-- Chartist.js -->
-                <div class="col-sm-6 ct-chart-infla"></div>
+                <div class="col-sm-6 ct-chart ct-chart-infla"></div>
                 <div class="col-sm-6 ">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Evolution de la moyenne des revenus / habitants dans le département </h3>
+                            <h3 class="panel-title">Moyennes des revenus et inflation </h3>
                         </div>
                         <div class="panel-body">
-                            (non corrigée de l'inflation)
+                            <ul>
+                                <li>
+                                    En rouge : évolution des revenus
+                                </li>
+                                <li>
+                                    En bleue : évolution des prix à la consommation (<a href="http://www.insee.fr/fr/themes/series-longues.asp?indicateur=inflation">INSEE</a> )
+                                </li>
+                            </ul>
                         </div>
 
                     </div>
@@ -225,8 +232,7 @@
                             <h3 class="panel-title">Note :</h3>
                         </div>
                         <div class="panel-body">
-                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
-                            augmente nécessairement les revenus (et fausse le graphique).
+                            Il ne s'agit pas de l'évolution des prix à la consommation dans le département mais celle du pays. Les écarts sont donc plus ou moins importants d'une région à une autre
                         </div>
 
                     </div>
