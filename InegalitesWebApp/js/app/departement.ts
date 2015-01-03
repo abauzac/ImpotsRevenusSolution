@@ -335,11 +335,56 @@ class MoyennesPage extends ContentPage {
 
             this.contentDiv.empty().prepend(clonedIntroTpl.html());
 
-            this.createChart(this.json.Moyennes);
+            this.createChartMoyennes(this.json.Moyennes);
+
+            this.createChartMoyInflations(this.json.Moyennes);
         }
     }
 
-    private createChart(moy: Object) {
+    private createChartMoyInflations(moyennes: Object) {
+        var baseDep = 100;
+        var baseInfla = 100;
+        var infla = [1.6, 1.5, 2.8, 0.1, 1.5, 2.1, 2];
+        var labels = [];
+        var series = [[], []];
+        series[0].push(100);
+        // moyennes
+        for (var year in moyennes) {
+            if (parseInt(year) >= 2006) {
+                labels.push(year);
+                series[0].push(moyennes[year] / moyennes["2006"] * 100);
+            }
+        }
+        // inflation
+        series[1].push(100);
+        var previous = 100;
+        for(var i = 0; i < infla.length; i++){
+            previous = previous * (100 + infla[i]) / 100
+            series[1].push(previous);
+        }
+
+        var data = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        var options = {
+            //  width: '480px',
+            height: '320px'
+        };
+
+
+        // In the global name space Chartist we call the Line function to initialize a line chart. 
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a 
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-infla', data, options);
+
+    }
+
+    private createChartMoyennes(moy: Object) {
         var labels = [];
         var series = [[]];
 
@@ -421,18 +466,18 @@ class LorenzPage extends ContentPage {
             this.year = "2012";
         }
 
-        if(!this.chartist)
+        if (!this.chartist)
             this.buildDropDown(lorenz.LorenzTranches);
 
         var lorenzCurve: any[] = lorenz.LorenzTranches[this.year];
 
         for (var i = 0, j = lorenzCurve.length; i < j; i++) {
-            
+
             labels.push((Math.round(lorenzCurve[i].Key * 100)).toFixed(1));
             series[0].push((Math.round(lorenzCurve[i].Value * 100)).toFixed(1));
         }
-       
-        
+
+
 
         // Create a simple line chart
         this.dataChart = {
@@ -486,7 +531,7 @@ class LorenzPage extends ContentPage {
 
     public insertChart() {
 
-       
+
 
         // In the global name space Chartist we call the Line function to initialize a line chart. 
         //As a first parameter we pass in a selector where we would like to get our chart created.
