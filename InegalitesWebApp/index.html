@@ -4,35 +4,47 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <title>Les revenus en France</title>
 
     <!-- Bootstrap -->
     <link href="css/libs/bootstrap.min.css" rel="stylesheet">
     <link href="css/libs/bootstrap-theme.min.css" rel="stylesheet">
     <link href="css/app/style.css" rel="stylesheet" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
 
 </head>
 <body>
     <!-- header -->
-    <nav class="navbar navbar-fixed-top">
-
-        <div class="navigationbar container">
-            <div class="navbar-header">
-                <a class="navbar-brand">Les revenus en France</a>
-            </div>
-
-            <ul class="nav navbar-nav ">
-                <li><a href="#">Les cartes</a></li>
-            </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navigationbar container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand">Les revenus en France</a>
 
                 </div>
-            </form>
-        </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="nav navbar-nav navbar-right">
+                        <form class="navbar-form" role="search">
+                            <div class="form-group">
+                                <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--<ul class="nav navbar-nav ">
+                    <li><a href="#">Les cartes</a></li>
+                </ul>-->
+
+            </div>
+        </div>
     </nav>
     <!-- /header -->
 
@@ -40,26 +52,62 @@
 
         <div class="row">
             <!-- LEFT MENU -->
-            <div class="menugauche col-sm-3 col-md-2">
-                <a class="list-group-item" href="#">lsit1</a>
-                <a class="list-group-item" href="#">lsit1</a>
-            </div>
             <!-- MIDDLE CONTENT -->
-            <div class="content col-sm-7 col-md-8">
-                MIDDLE
-            </div>
-            <!-- RIGHT MENU -->
-            <div class="col-sm-2 col-md-2 ">
-                RIGHT
+            <div class="content col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Description du projet</h3>
+                    </div>
+                    <div id="contentDiv" class="panel-body">
+                        <p>Etude sur les revenus en France à partir des données <a href="https://www.data.gouv.fr/fr/datasets/l-impot-sur-le-revenu-par-collectivite-territoriale/">impôt sur le revenu par collectivité territoriale</a></p>
+                        <h3>Comment ça marche ?</h3>
+                        <p>
+                            Pour le moment, seul la barre de recherche est fonctionnelle, mais elle permet d'accéder à pas mal d'informations pour chaque département à présent.
+                            Mais de futures fonctionnalités viendront s'ajouter pour compléter cette application
+                        </p>
+                        <h3>Lesquelles ?</h3>
+                        <p>
+                            Le projet n'est encore qu'à ses débuts, mais les idées fuses dans tous les sens...
+                            <ul>
+                                <li>De nombreuses cartes de France</li>
+                                <li>Des cartes par département (cartographie des villes)</li>
+                                <li>Comparaison entre départements</li>
+                                <li>De nouvelles "Data Viz"</li>
+                            </ul>
+                            Mais étant seul sur ce projet pour le moment, cela prend du temps.
+                        </p>
+                        <h3>A propos</h3>
+                        <p>Ce projet est en fait un ensemble de sous projets qui ont été réalisés avec l'aide de différentes technologies (JavaScript, C#..). Ces projets sont accessibles sur la <a href="https://github.com/abauzac/ImpotsRevenusSolution">plateforme github</a> </p>
+                        <p>
+                            Les résultats obtenus (visibles à travers cette application web), ne sont pas garantis "sans bugs ou erreurs" de ma part.
+                            Mais si vous repérez un problème, n'hésitez pas à me contacter.
+                        </p>
+                        <h3>Technologies utilisées</h3>
+                        <ul>
+                            <li>JSON.NET : création d'objets JSON</li>
+                            <li>jQuery</li>
+                            <li>jQuery Typeahead</li>
+                            <li>Bootstrap (Twitter) et <a href="glyphicons.com">glyphicons</a></li>
+                            <li>Chartist-JS</li>
+                            <li>Numeral.JS</li>
+                            <li>Et sûrement d'autres à venir...</li>
+                        </ul>
+                        <h3>Autres infos sur le projet</h3>
+                        <p>Plus d'information en lisant le README de<a href="https://github.com/abauzac/ImpotsRevenusSolution">la page github</a> du projet </p>
+                        <h3>Contacts</h3>
+                        <a href="https://twitter.com/amaury_bzc"><h4 style="display: inline-block;"><span class="label__twitter label label-default"><span class="label__fa-twitter fa fa-twitter"></span>&nbsp;twitter</span></h4></a>
+                        <a href="https://github.com/abauzac/ImpotsRevenusSolution"><h4 style="display: inline-block;"><span class="label__github label label-default"><span class="fa fa-github"></span>&nbsp;github</span></h4></a>
+                    </div>
+                </div>
             </div>
         </div>
- 
+
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="js/libs/jquery.js"></script>
     <script src="js/libs/bootstrap.min.js"></script>
     <script src="js/libs/typeahead.js"></script>
-    <script src="js/app/index.js"></script>
+    <script src="js/app/global.js"></script>
 </body>
 </html>

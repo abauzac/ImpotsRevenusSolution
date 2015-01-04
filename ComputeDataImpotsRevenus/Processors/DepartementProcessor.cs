@@ -70,10 +70,17 @@ namespace ComputeDataImpotsRevenus
 
                 foreach (Tranche tranche in dep.tranches)
                 {
-                    previousRevenuProp = Math.Round((decimal)tranche.revenus / (decimal)dep.revenus + previousRevenuProp, 5, MidpointRounding.ToEven);
-                    previousPopulationProp = Math.Round((decimal)tranche.nbFoyers / (decimal)dep.nbFoyers + previousPopulationProp, 5, MidpointRounding.ToEven);
+                    if (tranche.revenus != new decimal(-1))
+                    {
+                        previousRevenuProp = Math.Round((decimal)tranche.revenus / (decimal)dep.revenus + previousRevenuProp, 5, MidpointRounding.ToEven);
+                        previousPopulationProp = Math.Round((decimal)tranche.nbFoyers / (decimal)dep.nbFoyers + previousPopulationProp, 5, MidpointRounding.ToEven);
 
-                    lorenzCurve.Add(new KeyValuePair<decimal, decimal>(previousPopulationProp, previousRevenuProp));
+                        // correction arronds 
+                        if (Math.Abs(1 - previousPopulationProp) <= new decimal(0.001)) previousPopulationProp = new decimal(1.00001);
+                        if (Math.Abs(1 - previousRevenuProp) <= new decimal(0.001)) previousRevenuProp = new decimal(1.00001);
+
+                        lorenzCurve.Add(new KeyValuePair<decimal, decimal>(previousPopulationProp, previousRevenuProp));
+                    }
                 }
 
                 lorenzCurvesEachYear.Add(dep.year.ToString(), lorenzCurve);
@@ -108,6 +115,8 @@ namespace ComputeDataImpotsRevenus
 
                     if (currentCoord.Key != 0) // previous coord existe : transposition de fonction affine
                     {
+                       
+
                         if (currentCoord.Key - previousCoord.Key != 0)
                         {
                             a = (currentCoord.Value - previousCoord.Value) / (currentCoord.Key - previousCoord.Key);

@@ -2,28 +2,29 @@
 a:focus {
   outline: none;
 }
-.navigationbar.container {
-  background-color: #eee;
-  border-radius: 0 0 8px 8px;
+/*.nav > li > a
+{
+    margin: 5px 0;
+    padding: 10px 15px;
+    border-radius: 7px;
+    color:black;
+    font-size: 16px;
+    transition: all ease-in 0.2s;
+
+    &:hover, &:focus
+    {
+        background-color: #ddd;
+        color: #808080;
+    }
+}*/
+.navbar-collapse {
+  overflow: hidden;
 }
-.nav.navbar-nav {
-  margin-left: 3em;
-}
-.nav > li > a {
-  margin: 5px 0;
-  padding: 10px 15px;
-  border-radius: 7px;
-  color: black;
-  font-size: 16px;
-  transition: all ease-in 0.2s;
-}
-.nav > li > a:hover,
-.nav > li > a:focus {
-  background-color: #ddd;
-  color: #808080;
+.navbar-collapse .twitter-typeahead {
+  width: 100%;
 }
 .content-wrapper {
-  margin-top: 100px;
+  margin-top: 50px;
   width: 98%;
 }
 .menugauche {
@@ -56,5 +57,13 @@ a:focus {
 }
 .lorenz__dropdown {
   display: inline-block;
+}
+.label__twitter:hover {
+  transition: all 0.2s ease-in;
+  background-color: #55ACEE;
+}
+.label__github:hover {
+  transition: all 0.2s ease-in;
+  background-color: #000;
 }
 /*# sourceMappingURL=style.css.map */

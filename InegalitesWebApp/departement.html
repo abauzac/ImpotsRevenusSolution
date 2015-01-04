@@ -16,35 +16,45 @@
 </head>
 <body>
     <!-- header -->
-    <nav class="navbar navbar-fixed-top">
-
-        <div class="navigationbar container">
-            <div class="navbar-header">
-                <a class="navbar-brand">Les revenus en France</a>
-            </div>
-
-            <ul class="nav navbar-nav ">
-                <li><a href="#">Les cartes</a></li>
-            </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navigationbar container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand">Les revenus en France</a>
 
                 </div>
-            </form>
-        </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="nav navbar-nav navbar-right">
+                        <form class="navbar-form" role="search">
+                            <div class="form-group">
+                                <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--<ul class="nav navbar-nav ">
+                <li><a href="#">Les cartes</a></li>
+            </ul>-->
+
+            </div>
+        </div>
     </nav>
     <!-- /header -->
-
     <div class="content-wrapper container-fluid">
 
         <div class="row">
             <!-- LEFT MENU -->
-            <div class="menugauche list-group col-md-2 hidden-xs">
+            <div class="menugauche list-group col-sm-3 col-md-2">
             </div>
             <!-- MIDDLE CONTENT -->
-            <div class="content col-md-9">
+            <div class="content col-sm-9 col-md-9 ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title departement__depName"></h3>
@@ -67,7 +77,7 @@
     <script src="js/libs/numeral.fr.js"></script>
 
     <!-- Load app javascript-->
-    <script src="js/app/index.js"></script>
+    <script src="js/app/global.js"></script>
     <script src="js/app/departement.js"></script>
 
     <!-- Load templates -->
@@ -251,8 +261,8 @@
                 <div class="col-sm-6">
                     <div class="lorenz__dropdown">
                         <div class="dropdown ">
-                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                                Année
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropDownLorenzBtn" data-toggle="dropdown" aria-expanded="true">
+                                2012
                                 <span class="caret"></span>
                             </button>
                             <ul id="dropDownLorenzYears" class="dropdown-menu" role="menu" aria-labelledby="DropDown menu for years">
@@ -287,8 +297,7 @@
                             <h3 class="panel-title">Note :</h3>
                         </div>
                         <div class="panel-body">
-                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
-                            augmente nécessairement les revenus (et fausse le graphique).
+                            Découpage en vingtile (groupe de 5%) à partir des données par interpolation linéaire
                         </div>
 
                     </div>

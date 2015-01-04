@@ -1,5 +1,5 @@
 ﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="index.ts" />
+/// <reference path="global.ts" />
 /// <reference path="models.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -60,6 +60,7 @@ var DepPageBuilder = (function () {
     };
     DepPageBuilder.prototype.buildContentPage = function () {
         this.domDepName.text(this.json.Nom);
+        document.title = this.json.Nom;
 
         var contentPage;
 
@@ -368,12 +369,8 @@ var MoyennesPage = (function (_super) {
                 }
             }
         }
-
-        // Create a simple line chart
         var data = {
-            // A labels array that can contain any sort of values
             labels: labels,
-            // Our series array that contains series objects or in this case series data arrays
             series: series
         };
 
@@ -382,10 +379,6 @@ var MoyennesPage = (function (_super) {
             height: '320px'
         };
 
-        // In the global name space Chartist we call the Line function to initialize a line chart.
-        //As a first parameter we pass in a selector where we would like to get our chart created.
-        //Second parameter is the actual data object and as a
-        //third parameter we pass in our options
         new Chartist.Line('.ct-chart-moy', data, options);
     };
     return MoyennesPage;
@@ -409,7 +402,7 @@ var LorenzPage = (function (_super) {
     };
 
     LorenzPage.prototype.updateTexts = function (lorenz) {
-        var lorenzCurve = lorenz.LorenzTranches[this.year];
+        var lorenzCurve = lorenz.LorenzDeciles[this.year];
         var valeurMiddle = Math.round(lorenzCurve.length / 2);
         if (!this.chartist) {
             this.clonedTpl.find(".lecturePop").text((Math.round(lorenzCurve[valeurMiddle].Key * 100)).toFixed(1));
@@ -424,26 +417,22 @@ var LorenzPage = (function (_super) {
         var labels = [];
         var series = [[]];
 
-        //series.push([]);
         if (!this.year) {
             this.year = "2012";
         }
 
         if (!this.chartist)
-            this.buildDropDown(lorenz.LorenzTranches);
+            this.buildDropDown(lorenz.LorenzDeciles);
 
-        var lorenzCurve = lorenz.LorenzTranches[this.year];
+        var lorenzCurve = lorenz.LorenzDeciles[this.year];
 
         for (var i = 0, j = lorenzCurve.length; i < j; i++) {
             labels.push((Math.round(lorenzCurve[i].Key * 100)).toFixed(1));
             series[0].push((Math.round(lorenzCurve[i].Value * 100)).toFixed(1));
         }
 
-        // Create a simple line chart
         this.dataChart = {
-            // A labels array that can contain any sort of values
             labels: labels,
-            // Our series array that contains series objects or in this case series data arrays
             series: series
         };
 
@@ -475,7 +464,7 @@ var LorenzPage = (function (_super) {
 
             li.appendChild(dom);
 
-            ulDropDown[0].appendChild(li);
+            ulDropDown.prepend($(li));
         }
 
         this.contentDiv.on("click", "#dropDownLorenzYears a", this.clickDropDown.bind(this));
@@ -483,14 +472,12 @@ var LorenzPage = (function (_super) {
 
     LorenzPage.prototype.clickDropDown = function (event) {
         this.year = $(event.target).attr("data-year");
+        this.contentDiv.find("#dropDownLorenzBtn").text(this.year);
         this.build();
     };
 
     LorenzPage.prototype.insertChart = function () {
-        // In the global name space Chartist we call the Line function to initialize a line chart.
-        //As a first parameter we pass in a selector where we would like to get our chart created.
-        //Second parameter is the actual data object and as a
-        //third parameter we pass in our options
+        // juste update the chart if it already exists
         if (!this.chartist) {
             this.contentDiv.empty().prepend(this.clonedTpl.html());
             this.chartist = new Chartist.Line('.ct-chart-lorenz', this.dataChart, this.optionsChart);
