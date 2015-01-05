@@ -77,6 +77,9 @@ var DepPageBuilder = (function () {
             case "lorenz":
                 contentPage = new LorenzPage(this.json);
                 break;
+            case "seuils":
+                contentPage = new SeuilsPage(this.json);
+                break;
             default:
                 contentPage = new ErrorPage("Page not found : " + this.pageName);
         }
@@ -138,6 +141,9 @@ var MenuDepartement = (function () {
 
         // create Moyennes
         this.addMenuItem("Moyennes", this.depNumber, "moyennes", this.itemCallback);
+
+        // create Moyennes
+        this.addMenuItem("Seuils des revenus", this.depNumber, "seuils", this.itemCallback);
 
         this.domMenu.empty().append(this.items);
     };
@@ -317,10 +323,9 @@ var MoyennesPage = (function (_super) {
     MoyennesPage.prototype.createChartMoyInflations = function (moyennes) {
         var baseDep = 100;
         var baseInfla = 100;
-        var infla = [1.6, 1.5, 2.8, 0.1, 1.5, 2.1, 2];
+        var infla = [1.5, 2.8, 0.1, 1.5, 2.1, 2];
         var labels = [];
         var series = [[], []];
-        series[0].push(100);
 
         for (var year in moyennes) {
             if (parseInt(year) >= 2006) {
@@ -486,6 +491,188 @@ var LorenzPage = (function (_super) {
         }
     };
     return LorenzPage;
+})(ContentPage);
+
+var SeuilsPage = (function (_super) {
+    __extends(SeuilsPage, _super);
+    function SeuilsPage(json) {
+        _super.call(this, json);
+        this.seuilsTpl = $("<div>").html($("#depSeuilsTemplate").html());
+    }
+    SeuilsPage.prototype.build = function () {
+        if (this.json) {
+            var json = this.json;
+            var clonedIntroTpl = this.seuilsTpl.clone();
+
+            this.contentDiv.empty().prepend(clonedIntroTpl.html());
+
+            this.createChartSeuilsLorenz(this.json.Lorenz.LorenzDeciles);
+
+            this.createChartSeuilsRevenus(this.json);
+
+            this.createChartSeuilsBase(this.json);
+        } else {
+            this.showErrorPage("Impossible de récupérer les données JSON");
+        }
+    };
+
+    SeuilsPage.prototype.createChartSeuilsBase = function (json) {
+        var baseDep = 100;
+        var baseInfla = 100;
+        var infla = [0, 1.5, 2.8, 0.1, 1.5, 2.1, 2];
+        var labels = [];
+        var series = [[], [], []];
+
+        var lorenzDeciles = json.Lorenz.LorenzDeciles;
+        var data = json.Data;
+
+        var totalPopBase = data["2006"].nbFoyers;
+        var totalRevBase = data["2006"].revenus;
+
+        var base50 = (lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.5);
+        var base30 = (lorenzDeciles["2006"][16].Value * totalRevBase - lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.3);
+        var base20 = (totalRevBase - lorenzDeciles["2006"][16].Value * totalRevBase - lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.2);
+
+        var i = 0;
+        for (var year in lorenzDeciles) {
+            if (parseInt(year) >= 2006) {
+                labels.push(year);
+
+                var totalPop = data[year].nbFoyers;
+                var totalRev = data[year].revenus;
+                var revProp50 = lorenzDeciles[year][10].Value;
+                var revProp80 = lorenzDeciles[year][16].Value;
+
+                var revMoy50 = (revProp50 * totalRev) / (totalPop * 0.5);
+
+                series[0].push(revMoy50 / base50 * 100);
+
+                var revMoy30 = (revProp80 * totalRev - revProp50 * totalRev) / (totalPop * 0.3);
+
+                series[1].push(revMoy30 / base30 * 100);
+
+                var revMoy20 = (totalRev - revProp80 * totalRev - revProp50 * totalRev) / (totalPop * 0.2);
+
+                series[2].push(revMoy20 / base20 * 100);
+                //baseInfla = baseInfla * ((100 + infla[i]) / 100);
+                //series[3].push(baseInfla);
+                //i++;
+            }
+        }
+
+        var datachart = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        var options = {
+            //  width: '480px',
+            height: '320px'
+        };
+
+        // In the global name space Chartist we call the Line function to initialize a line chart.
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-seuils-base', datachart, options);
+    };
+
+    SeuilsPage.prototype.createChartSeuilsRevenus = function (json) {
+        var baseDep = 100;
+        var baseInfla = 100;
+        var labels = [];
+        var series = [[], [], []];
+
+        var lorenzDeciles = json.Lorenz.LorenzDeciles;
+        var data = json.Data;
+
+        var base50, base30, base20;
+
+        for (var year in lorenzDeciles) {
+            if (year && parseInt(year) >= 2006) {
+                labels.push(year);
+                var revProp50 = lorenzDeciles[year][10].Value;
+                var revProp80 = lorenzDeciles[year][16].Value;
+                var totalRev = data[year].revenus;
+                var totalPop = data[year].nbFoyers;
+
+                var revMoy50 = (revProp50 * totalRev) / (totalPop * 0.5);
+
+                series[0].push(revMoy50);
+
+                var revMoy30 = (revProp80 * totalRev - revProp50 * totalRev) / (totalPop * 0.3);
+
+                series[1].push(revMoy30);
+
+                var revMoy20 = (totalRev - revProp80 * totalRev - revProp50 * totalRev) / (totalPop * 0.2);
+
+                series[2].push(revMoy20);
+            }
+        }
+
+        var datachart = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        var options = {
+            //  width: '480px',
+            height: '320px',
+            low: 0
+        };
+
+        // In the global name space Chartist we call the Line function to initialize a line chart.
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-seuils-rev', datachart, options);
+    };
+
+    SeuilsPage.prototype.createChartSeuilsLorenz = function (lorenzDeciles) {
+        var baseDep = 100;
+        var baseInfla = 100;
+
+        //var infla = [1.6, 1.5, 2.8, 0.1, 1.5, 2.1, 2];
+        var labels = [];
+        var series = [[], []];
+        for (var year in lorenzDeciles) {
+            if (year) {
+                labels.push(year);
+                series[0].push(lorenzDeciles[year][10].Value * 100);
+                series[1].push(lorenzDeciles[year][16].Value * 100);
+            }
+        }
+
+        var data = {
+            // A labels array that can contain any sort of values
+            labels: labels,
+            // Our series array that contains series objects or in this case series data arrays
+            series: series
+        };
+
+        var options = {
+            //  width: '480px',
+            height: '320px',
+            showArea: true,
+            low: 0,
+            axisY: {
+                labelInterpolationFnc: function (value) {
+                    return value + "%";
+                }
+            }
+        };
+
+        // In the global name space Chartist we call the Line function to initialize a line chart.
+        //As a first parameter we pass in a selector where we would like to get our chart created.
+        //Second parameter is the actual data object and as a
+        //third parameter we pass in our options
+        new Chartist.Line('.ct-chart-seuils', data, options);
+    };
+    return SeuilsPage;
 })(ContentPage);
 
 $(document).ready(function () {

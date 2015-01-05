@@ -160,7 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="js\app\departement.ts" />
-    <TypeScriptCompile Include="js\app\index.ts" />
+    <TypeScriptCompile Include="js\app\global.ts" />
     <TypeScriptCompile Include="js\app\models.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>

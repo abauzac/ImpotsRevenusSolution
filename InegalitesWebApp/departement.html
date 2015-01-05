@@ -20,28 +20,19 @@
         <div class="container-fluid">
             <div class="navigationbar container">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
+                    </button>-->
                     <a class="navbar-brand">Les revenus en France</a>
 
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <div class="nav navbar-nav navbar-right">
-                        <form class="navbar-form" role="search">
-                            <div class="form-group">
-                                <input id="searchDepartements" type="text" class="form-control typeahead" placeholder="Departements..." />
 
-                            </div>
-                        </form>
-                    </div>
-                </div>
                 <!--<ul class="nav navbar-nav ">
-                <li><a href="#">Les cartes</a></li>
-            </ul>-->
+                    <li><a href="#">Les cartes</a></li>
+                </ul>-->
 
             </div>
         </div>
@@ -51,7 +42,14 @@
 
         <div class="row">
             <!-- LEFT MENU -->
-            <div class="menugauche list-group col-sm-3 col-md-2">
+            <div class="col-sm-3 col-md-2">
+                <h4 class="hidden-xs">Recherche :</h4>
+                <form class="search-dep form-search" role="search">
+                    <input id="searchDepartements" type="search" class="form-control typeahead search-query" placeholder="Departements...">
+                      
+                </form>
+                <h4 class="hidden-xs">Menu</h4>
+                <div class="menugauche list-group"></div>
             </div>
             <!-- MIDDLE CONTENT -->
             <div class="content col-sm-9 col-md-9 ">
@@ -159,8 +157,8 @@
                             <img src="resources/img/giniformula.png" alt="Formule du coefficient de Gini" />
                             <br />
                             (Image wikimedia)
-                            <br/><br/>
-                            Avec : 
+                            <br /><br />
+                            Avec :
                             <ul>
                                 <li>X = Part cumulée de la population</li>
                                 <li>Y = Part cumulée des revenus</li>
@@ -265,16 +263,14 @@
                                 2012
                                 <span class="caret"></span>
                             </button>
-                            <ul id="dropDownLorenzYears" class="dropdown-menu" role="menu" aria-labelledby="DropDown menu for years">
-
-                            </ul>
+                            <ul id="dropDownLorenzYears" class="dropdown-menu" role="menu" aria-labelledby="DropDown menu for years"></ul>
                         </div>
                     </div>
                     <br />
                     <div class="ct-chart ct-chart-lorenz"></div>
-                    
+
                 </div>
-               
+
                 <div class="col-sm-6 ">
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -286,7 +282,7 @@
                                 <li>Abscisse : part cumulée de la population</li>
                                 <li>Ordonnée : part cumulée des revenus</li>
                             </ul>
-                            Lecture :<br/>
+                            Lecture :<br />
                             <em>"<span class="lecturePop"></span>% de la population la moins riche perçoit <span class="lectureRev"></span>% des revenus totaux"</em>
                         </div>
 
@@ -306,6 +302,104 @@
         </div>
     </script>
 
+    <script id="depSeuilsTemplate" type="text/html">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-seuils"></div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Seuils 50/30/20</h3>
+                        </div>
+                        <div class="panel-body">
+                            Description :
+                            <ul>
+                                <li>En rouge : part des revenus perçus par 50% des foyers les moins riches</li>
+                                <li>En bleue : part des revenus perçus par 80% des foyers les moins riches</li>
+                            </ul>
+                            <p>Le reste (au dessus de la courbe bleue jusqu'à 100%), correspond donc aux revenus perçus par 20% des foyers les plus riches</p>
+                        </div>
 
+
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <hr class="divider" />
+
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-seuils-rev"></div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Revenus moyens par seuils</h3>
+                        </div>
+                        <div class="panel-body">
+                            Revenus moyens perçus par :
+                            <ul>
+                                <li>En rouge : 50% des foyer les plus pauvres</li>
+                                <li>En jaune : 20% des foyers les plus riches</li>
+                                <li>En bleue : 30% des foyers entre les 2 catégories précédentes (Les "classes moyennes" ?)</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider" />
+
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-seuils-base"></div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolutions des revenus par foyer par seuil <small>(Base 100 = 2006)</small> </h3>
+                        </div>
+                        <div class="panel-body">
+                            Revenus moyens perçus par :
+                            <ul>
+                                <li>En rouge : 50% des foyer les plus pauvres</li>
+                                <li>En jaune : 20% des foyers les plus riches</li>
+                                <li>En bleue : 30% des foyers entre les 2 catégories précédentes</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </script>
 </body>
 </html>

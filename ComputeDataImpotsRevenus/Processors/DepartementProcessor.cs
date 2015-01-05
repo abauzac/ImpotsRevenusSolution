@@ -68,8 +68,9 @@ namespace ComputeDataImpotsRevenus
                 decimal previousRevenuProp = new Decimal(0);
 
 
-                foreach (Tranche tranche in dep.tranches)
+                for (int i = 0; i < dep.tranches.Length; i++)
                 {
+                    Tranche tranche = dep.tranches[i];
                     if (tranche.revenus != new decimal(-1))
                     {
                         previousRevenuProp = Math.Round((decimal)tranche.revenus / (decimal)dep.revenus + previousRevenuProp, 5, MidpointRounding.ToEven);
@@ -80,6 +81,13 @@ namespace ComputeDataImpotsRevenus
                         if (Math.Abs(1 - previousRevenuProp) <= new decimal(0.001)) previousRevenuProp = new decimal(1.00001);
 
                         lorenzCurve.Add(new KeyValuePair<decimal, decimal>(previousPopulationProp, previousRevenuProp));
+                    }
+                    else
+                    {
+                        if (i == dep.tranches.Length - 1) // last item : add 1,1
+                        {
+                            lorenzCurve.Add(new KeyValuePair<decimal, decimal>(new decimal(1), new decimal(1)));
+                        }
                     }
                 }
 

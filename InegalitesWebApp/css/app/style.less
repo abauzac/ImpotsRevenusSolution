@@ -4,31 +4,32 @@ a:focus{
 }
 
 
-.nav.navbar-nav{
-   // margin-left:3em;
+.twitter-typeahead{
+    width:100%;
 }
 
-/*.nav > li > a
-{
-    margin: 5px 0;
-    padding: 10px 15px;
-    border-radius: 7px;
-    color:black;
-    font-size: 16px;
-    transition: all ease-in 0.2s;
-
-    &:hover, &:focus
-    {
-        background-color: #ddd;
-        color: #808080;
-    }
-}*/
+input.search-query {
+    padding-left:26px;
+}
+form.form-search {
+    position: relative;
+}
+form.form-search:before {
+    display: block;
+    width: 14px;
+    height: 14px;
+    content: "\e003";
+    font-family: 'Glyphicons Halflings';
+    background-position: -48px 0;
+    position: absolute;
+    top:8px;
+    left:8px;
+    opacity: .5;
+    z-index: 1000;
+}
 
 .navbar-collapse{
     overflow: hidden;
-        .twitter-typeahead{
-            width: 100%;
-        }
     
 }
 
