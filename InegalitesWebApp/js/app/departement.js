@@ -676,6 +676,7 @@ var SeuilsPage = (function (_super) {
 })(ContentPage);
 
 $(document).ready(function () {
+    numeral.language('fr');
     main.pageBuilder = new DepPageBuilder(false);
     main.pageBuilder.buildPage();
 });

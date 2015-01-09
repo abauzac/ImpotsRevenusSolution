@@ -732,6 +732,7 @@ class SeuilsPage extends ContentPage {
 }
 
 $(document).ready(function () {
+    numeral.language('fr');
     main.pageBuilder = new DepPageBuilder(false);
     main.pageBuilder.buildPage();
 });

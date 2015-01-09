@@ -14,13 +14,15 @@ namespace ComputeDataImpotsRevenus
         Departement currentDepartement;
         List<Departement> everyYearsForCurrentDepartement = new List<Departement>();
 
-        public DepartementProcessor(Departement dep, List<Departement[]> listEachYearAllDepartments)
+        public DepartementProcessor(Departement dep, Dictionary<string, Departement[]> listEachYearAllDepartments)
         {
             this.currentDepartement = dep;
 
 
-            foreach (Departement[] oneYearAllDepartments in listEachYearAllDepartments)
+            foreach (string year in listEachYearAllDepartments.Keys)
             {
+                Departement[] oneYearAllDepartments = listEachYearAllDepartments[year];
+
                 Departement depyear = oneYearAllDepartments.Where(deppartement => deppartement.depName == this.currentDepartement.depName ||
                                                                                   deppartement.depNumber == this.currentDepartement.depNumber).First();
                 if (depyear != null)

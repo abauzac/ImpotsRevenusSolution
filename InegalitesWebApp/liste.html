@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="css/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="css/libs/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/libs/chartist.css" rel="stylesheet">
+    <link href="css/app/style.css" rel="stylesheet" />
+
+
+</head>
+<body>
+    <!-- header -->
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navigationbar container">
+                <div class="navbar-header">
+                    
+                    <a class="navbar-brand">Les revenus en France</a>
+
+                </div>
+
+                <ul class="nav navbar-nav ">
+                    <li><a href="liste.html#liste-2012">Départements</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+    <!-- /header -->
+    <div class="content-wrapper container-fluid">
+
+        <div class="row">
+            <!-- LEFT MENU -->
+            <div class="col-sm-3 col-md-2">
+                <h4 class="hidden-xs">Recherche :</h4>
+                <form class="search-dep form-search" role="search">
+                    <input id="searchDepartements" type="search" class="form-control typeahead search-query" placeholder="Departements...">
+
+                </form>
+                <h4 class="hidden-xs">Menu</h4>
+                <div class="menugauche list-group"></div>
+            </div>
+            <!-- MIDDLE CONTENT -->
+            <div class="content col-sm-9 col-md-9 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title panel-title-text"></h3>
+                    </div>
+                    <div id="contentDiv" class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Load libs -->
+    <script src="js/libs/jquery.js"></script>
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/typeahead.js"></script>
+
+    <!-- Load app javascript-->
+    <script src="js/app/global.js"></script>
+    <script src="js/app/liste.js"></script>
+
+    <script id="errorTemplate" type="text/html">
+        <div class="panel-group">
+            <h2>
+                Oups ! Une erreur est survenue !
+            </h2>
+            <div class="alert alert-danger">
+                Erreur : <span id="errorTextId"></span>
+            </div>
+        </div>
+    </script>
+
+    <script id="listeAnneeTpl" type="text/html">
+        <p class="liste-year__intro">
+            Chiffres sur les départements, par année. Ces chiffres sont normalement correctes, mais des erreurs peuvent se glisser.
+            Par exemple, en 2012, les revenus de la Guadeloupe sont faux en raison de chiffres érronés fournis par le ministère...
+        </p>
+
+        <div class="liste-year__dropdown">
+            <div class="dropdown ">
+                <button class="btn btn-default dropdown-toggle" type="button" id="btn_liste-year" data-toggle="dropdown" aria-expanded="true">
+                    2012
+                    <span class="caret"></span>
+                </button>
+                <ul id="ddn_liste-year" class="dropdown-menu" role="menu" aria-labelledby="Choisir l'année d'étude"></ul>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr class="liste-table__thead">
+                    <th>Rang</th>
+                    <th>
+                        Numero &nbsp;
+                        <span data-column="DepNum" data-sort="asc" class="glyphicon glyphicon-chevron-up"></span>
+                        <span data-column="DepNum" data-sort="desc" class="glyphicon glyphicon-chevron-down"></span>
+                    </th>
+                    <th>
+                        Departement
+                    </th>
+                    <th>
+                        Revenus Moyen &nbsp;
+                        <span data-column="Moyenne" data-sort="asc" class="glyphicon glyphicon-chevron-up"></span>
+                        <span data-column="Moyenne" data-sort="desc" class="glyphicon glyphicon-chevron-down"></span>
+                    </th>
+                    <th>
+                        Coeff de Gini &nbsp;
+                        <span data-column="Gini" data-sort="asc" class="glyphicon glyphicon-chevron-up"></span>
+                        <span data-column="Gini" data-sort="desc" class="glyphicon glyphicon-chevron-down"></span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="liste-table__tbody"></tbody>
+        </table>
+    </script>
+</body>
+</html>

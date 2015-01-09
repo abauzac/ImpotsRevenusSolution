@@ -15,11 +15,11 @@ namespace ComputeDataImpotsRevenus
         static void Main(string[] args)
         {
 
-            List<Departement[]> listEachYearAllDepartments = DepartementDeserializer.getEveryYearWithAllDepartements();
-
+            Dictionary<string, Departement[]> listEachYearAllDepartments = DepartementDeserializer.getEveryYearWithAllDepartements();
+            List<DepartementData> listAllDepData = new List<DepartementData>();
             List<string> listDepStrings = new List<string>();
             // objet liste contenant toutes les années d'un même département
-            foreach (Departement dep in listEachYearAllDepartments[0])
+            foreach (Departement dep in listEachYearAllDepartments[listEachYearAllDepartments.Keys.ElementAt(0)])
             {
                 DepartementProcessor depProc = new DepartementProcessor(dep, listEachYearAllDepartments);
                 DepartementData depData = new DepartementData();
@@ -31,10 +31,30 @@ namespace ComputeDataImpotsRevenus
                 depData.Data = depProc.getData();
                 depData.JSONserialize(dep.depNumber + ".json");
 
+                listAllDepData.Add(depData);
+
                 listDepStrings.Add(dep.depNumber + " - " + dep.depName);
 
             }
 
+            foreach (string year in listEachYearAllDepartments.Keys)
+            {
+
+                List<DepartementYearData> yd = new List<DepartementYearData>();
+                foreach (DepartementData dep in listAllDepData)
+                {
+                    DepartementYearData yeardt = new DepartementYearData();
+                    yeardt.DepNum = dep.Numero;
+                    yeardt.Nom = dep.Nom;
+                    yeardt.Gini = dep.Gini[year];
+                    yeardt.Moyenne = dep.Moyennes[year];
+                    yd.Add(yeardt);
+                    
+                }
+                DepartementYearData.JSONSerialize(yd.ToArray(), year);
+            }
+
+            // serialize deplist
             DirectoryInfo rootSolutionDir = new DirectoryInfo(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent;
             DirectoryInfo jsonDirComp = new DirectoryInfo(Path.Combine(rootSolutionDir.FullName, "resources", "departements_json_computed"));
             FileInfo jsonfile = new FileInfo(Path.Combine(jsonDirComp.FullName, "deplist.json"));
@@ -45,7 +65,6 @@ namespace ComputeDataImpotsRevenus
                     writer.Write(JsonConvert.SerializeObject(listDepStrings.ToArray()));
                 }
             }
-
 
             Console.WriteLine("End of program");
             Console.ReadLine();

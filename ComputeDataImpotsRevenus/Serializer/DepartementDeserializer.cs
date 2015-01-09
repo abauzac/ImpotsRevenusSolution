@@ -11,7 +11,7 @@ namespace ComputeDataImpotsRevenus
 {
     class DepartementDeserializer
     {
-        public static List<Departement[]> getEveryYearWithAllDepartements()
+        public static Dictionary<string,Departement[]> getEveryYearWithAllDepartements()
         {
             DirectoryInfo rootSolutionDir = new DirectoryInfo(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent;
 
@@ -28,14 +28,15 @@ namespace ComputeDataImpotsRevenus
             }
 
             // cache full list of departments
-            List<Departement[]> listEachYearAllDepartments = new List<Departement[]>();
+            Dictionary<string, Departement[]> listEachYearAllDepartments = new Dictionary<string, Departement[]>();
             foreach (FileInfo file in listfiles)
             {
                 Departement[] OneYearAllDep = JsonConvert.DeserializeObject<Departement[]>(File.ReadAllText(file.FullName));
-                OneYearAllDep.ToList().ForEach(dep => dep.year = Convert.ToInt32(file.Name.Substring(0, file.Name.IndexOf('.'))));
+                string year = file.Name.Substring(0, file.Name.IndexOf('.'));
+                OneYearAllDep.ToList().ForEach(dep => dep.year = Convert.ToInt32(year));
 
                 if(OneYearAllDep != null && OneYearAllDep.Count() > 0)
-                    listEachYearAllDepartments.Add(OneYearAllDep);
+                    listEachYearAllDepartments.Add(year, OneYearAllDep);
             }
 
             if (listEachYearAllDepartments.Count == listfiles.Count())

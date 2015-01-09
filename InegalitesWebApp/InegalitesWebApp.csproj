@@ -153,6 +153,7 @@
     <Content Include="js\libs\npm.js" />
     <Content Include="js\libs\numeral.js" />
     <Content Include="js\libs\typeahead.js" />
+    <Content Include="liste.html" />
     <Content Include="resources\img\giniformula.png" />
     <Content Include="web.config">
       <SubType>Designer</SubType>
@@ -161,6 +162,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app\departement.ts" />
     <TypeScriptCompile Include="js\app\global.ts" />
+    <TypeScriptCompile Include="js\app\liste.ts" />
     <TypeScriptCompile Include="js\app\models.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
