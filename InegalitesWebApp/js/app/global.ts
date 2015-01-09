@@ -113,9 +113,9 @@ class Main {
 class ContentPage {
 
     public contentDiv: JQuery = $("#contentDiv");
-    public json: DepartementJSON = null;
+    public json: any = null;
 
-    constructor(json: DepartementJSON) {
+    constructor(json: any) {
         
         this.json = json;
     }
@@ -160,7 +160,7 @@ $(document).ready(() => {
 
     main = new Main();
     main.createTypeAhead();
-    numeral.language('fr');
+    //numeral.language('fr');
     //main.pageBuilder.buildPage();
 });
 

@@ -134,6 +134,6 @@ var main;
 $(document).ready(function () {
     main = new Main();
     main.createTypeAhead();
-    numeral.language('fr');
+    //numeral.language('fr');
     //main.pageBuilder.buildPage();
 });
