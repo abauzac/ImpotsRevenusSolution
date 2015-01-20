@@ -46,7 +46,7 @@
                 <h4 class="hidden-xs">Recherche :</h4>
                 <form class="search-dep form-search" role="search">
                     <input id="searchDepartements" type="search" class="form-control typeahead search-query" placeholder="Departements...">
-                      
+
                 </form>
                 <h4 class="hidden-xs">Menu</h4>
                 <div class="menugauche list-group"></div>
@@ -205,8 +205,8 @@
                             <h3 class="panel-title">Note :</h3>
                         </div>
                         <div class="panel-body">
-                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006 a supprimé l'abattement de 20% sur les revenus des salariés ce qui
-                            augmente nécessairement les revenus (et fausse le graphique).
+                            Attention : les données ne commencent qu'en 2006 car la loi de finance de 2006.
+                            Il semblerait que les méthodes de calculs du revenus total ait changé en 2007 (impôts sur les revenus de 2006)
                         </div>
 
                     </div>
@@ -320,19 +320,14 @@
                             </ul>
                             <p>Le reste (au dessus de la courbe bleue jusqu'à 100%), correspond donc aux revenus perçus par 20% des foyers les plus riches</p>
                         </div>
-
-
-                    </div>
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Note :</h3>
-                        </div>
-                        <div class="panel-body">
-
-                        </div>
-
                     </div>
                 </div>
+                <div class="col-sm-12">
+                    <blockquote>
+                        <p>50% des foyers les plus pauvres ont perçu <span class="seuils-text-revenus-prop"></span>% du total des revenus déclarés en 2012</p>
+                    </blockquote>
+                </div>
+
             </div>
             <hr class="divider" />
 
@@ -391,7 +386,8 @@
                             <h3 class="panel-title">Note :</h3>
                         </div>
                         <div class="panel-body">
-
+                            Ce graphique permet d'avoir une idée de l'évolution des revenus déclarés depuis 2006.
+                            Cependant, ces chiffres sont tirés d'une approximation à partir des données fournies par les ministères.
                         </div>
 
                     </div>
@@ -399,6 +395,83 @@
             </div>
 
 
+        </div>
+    </script>
+
+    <script id="depImpotsTemplate" type="text/html">
+
+        <div class="container-fluid">
+          
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-impots__moyennne-foyer"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Impot moyen par foyer</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>
+                                    En rouge : impot moyen payé par un foyer imposable (ayant un impôt positif)
+                                </li>
+                                <li>
+                                    En bleu : impôt moyen payé (virtuellement) par l'ensemble des foyers.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <hr class="divider" />
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-impots__evo-total"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Evolution de l'impot total & nombre de foyers</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul>
+                                <li>
+                                    En rouge : Evolution de l'impôt total.
+                                </li>
+                                <li>
+                                    En bleu : Evolution de la population
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Note :</h3>
+                        </div>
+                        <div class="panel-body">
+                            Ce graphique permet de comparer l'évolution du nombre de foyers dans le département contre l'évolution
+                            de l'impôt total avec pour base 100 l'année 2003
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <hr class="divider" />
+            <div class="row">
+                <!-- Chartist.js -->
+                <div class="col-sm-6 ct-chart ct-chart-impots__foyers-imposables"></div>
+                <div class="col-sm-6 ">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Part de la population imposable</h3>
+                        </div>
+                        <div class="panel-body">
+                            Equivalent à la part de la population ayant un impôt sur les revenus positif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </script>
 </body>
