@@ -5,7 +5,7 @@
 
 
 declare var numeral;
-
+declare var Chartist;
 
 
 class DepPageBuilder implements IPageBuilder {
@@ -91,6 +91,9 @@ class DepPageBuilder implements IPageBuilder {
             case "seuils":
                 contentPage = new SeuilsPage(this.json);
                 break;
+            case "impots":
+                contentPage = new ImpotsPage(this.json);
+                break;
             default:
                 contentPage = new ErrorPage("Page not found : " + this.pageName);
         }
@@ -159,6 +162,8 @@ class MenuDepartement {
         this.addMenuItem("Moyennes", this.depNumber, "moyennes", this.itemCallback);
         // create Moyennes
         this.addMenuItem("Seuils des revenus", this.depNumber, "seuils", this.itemCallback);
+        // create Impots
+        this.addMenuItem("Impots", this.depNumber, "impots", this.itemCallback);
 
         this.domMenu.empty().append(this.items);
     }
@@ -420,7 +425,7 @@ class MoyennesPage extends ContentPage {
         new Chartist.Line('.ct-chart-moy', data, options);
     }
 }
-declare var Chartist;
+
 
 class LorenzPage extends ContentPage {
     public lorenzTpl = $("<div>").html($("#depLorenzTemplate").html());
@@ -576,7 +581,7 @@ class SeuilsPage extends ContentPage {
 
         var totalPopBase = (<DepartementYear>data["2006"]).nbFoyers;
         var totalRevBase = (<DepartementYear>data["2006"]).revenus;
-        
+
         var base50 = (lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.5);
         var base30 = (lorenzDeciles["2006"][16].Value * totalRevBase - lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.3);
         var base20 = (totalRevBase - lorenzDeciles["2006"][16].Value * totalRevBase - lorenzDeciles["2006"][10].Value * totalRevBase) / (totalPopBase * 0.2);
@@ -592,9 +597,9 @@ class SeuilsPage extends ContentPage {
                 var revProp50 = lorenzDeciles[year][10].Value;
                 var revProp80 = lorenzDeciles[year][16].Value;
 
-                var revMoy50 = (revProp50 * totalRev) / (totalPop*0.5);
+                var revMoy50 = (revProp50 * totalRev) / (totalPop * 0.5);
 
-                series[0].push(revMoy50/base50*100);
+                series[0].push(revMoy50 / base50 * 100);
 
                 var revMoy30 = (revProp80 * totalRev - revProp50 * totalRev) / (totalPop * 0.3);
 
@@ -650,7 +655,7 @@ class SeuilsPage extends ContentPage {
                 var totalRev = (<DepartementYear>data[year]).revenus;
                 var totalPop = (<DepartementYear>data[year]).nbFoyers;
 
-                var revMoy50 = (revProp50 * totalRev )/ (totalPop*0.5);
+                var revMoy50 = (revProp50 * totalRev) / (totalPop * 0.5);
 
                 series[0].push(revMoy50);
 
@@ -698,8 +703,12 @@ class SeuilsPage extends ContentPage {
         for (var year in lorenzDeciles) {
             if (year) {
                 labels.push(year);
-                series[0].push(lorenzDeciles[year][10].Value * 100);
-                series[1].push(lorenzDeciles[year][16].Value * 100);
+                series[0].push((lorenzDeciles[year][10].Value * 100).toFixed(2));
+                series[1].push((lorenzDeciles[year][16].Value * 100).toFixed(2));
+            }
+
+            if (year == 2012) {
+                this.contentDiv.find(".seuils-text-revenus-prop").text((lorenzDeciles[year][10].Value * 100).toFixed(2));
             }
         }
 
@@ -731,6 +740,115 @@ class SeuilsPage extends ContentPage {
     }
 }
 
+
+class ImpotsPage extends ContentPage {
+    public impotsTpl: JQuery = $("<div>").html($("#depImpotsTemplate").html());
+
+    constructor(json: DepartementJSON) {
+        super(json);
+    }
+
+    public build() {
+        if (this.json) {
+            var json = this.json;
+            var clonedIntroTpl = this.impotsTpl.clone();
+
+            this.contentDiv.empty().prepend(clonedIntroTpl.html());
+
+
+            this.createChartImpotsMoyensParFoyer();
+
+            this.createChartEvolutionTotalImpot();
+
+            this.createChartPropFoyersImposables();
+        }
+    }
+
+   
+
+    public createChartImpotsMoyensParFoyer() {
+        var labels = [];
+        var series = [[], []];
+        var datajson = this.json.Data;
+        for (var year in datajson) {
+            if (datajson.hasOwnProperty(year)) {
+                var datayear: DepartementYear = datajson[year];
+                datayear.revenus
+                labels.push(year);
+                var impots = 0;
+                for (var i = 0; i < datayear.tranches.length; i++) {
+                    if (datayear.tranches[i].impot > 0)
+                        impots += datayear.tranches[i].impot;
+                }
+
+                series[0].push((impots / datayear.nbFoyersImposables).toFixed(1));
+                series[1].push((datayear.impot / datayear.nbFoyers).toFixed(1));
+
+            }
+
+        }
+        var data = { labels: labels, series: series };
+
+        var options = { height: '320px' };
+
+
+        new Chartist.Line('.ct-chart-impots__moyennne-foyer', data, options);
+    }
+
+    public createChartPropFoyersImposables() {
+        var labels = [];
+        var series = [[]];
+        var datajson = this.json.Data;
+        for (var year in datajson) {
+            if (datajson.hasOwnProperty(year)) {
+                var datayear: DepartementYear = datajson[year];
+                datayear.revenus
+                labels.push(year);
+                series[0].push((datayear.nbFoyersImposables / datayear.nbFoyers * 100).toFixed(1));
+
+            }
+
+        }
+        var data = { labels: labels, series: series };
+
+        var options = { height: '320px' };
+
+
+        new Chartist.Line('.ct-chart-impots__foyers-imposables', data, options);
+    }
+
+    public createChartEvolutionTotalImpot() {
+        var labels = [];
+        var series = [[], []];
+        var datajson = this.json.Data;
+        var impotTotalBaseYear;
+        var foyerTotalBaseYear;
+        for (var year in datajson) {
+            if (datajson.hasOwnProperty(year)) {
+
+                var datayear: DepartementYear = datajson[year];
+                if (year == "2003") {
+                    impotTotalBaseYear = datayear.impot;
+                    foyerTotalBaseYear = datayear.nbFoyers;
+                    labels.push(year);
+                    series[0].push(100);
+                    series[1].push(100);
+                } else {
+                    datayear.revenus
+                    labels.push(year);
+                    series[0].push((datayear.impot / impotTotalBaseYear * 100).toFixed(1));
+                    series[1].push((datayear.nbFoyers / foyerTotalBaseYear * 100).toFixed(1));
+                }
+            }
+        }
+        var data = { labels: labels, series: series };
+
+        var options = { height: '320px' };
+
+
+        new Chartist.Line('.ct-chart-impots__evo-total', data, options);
+    }
+}
 $(document).ready(function () {
     numeral.language('fr');
     main.pageBuilder = new DepPageBuilder(false);
