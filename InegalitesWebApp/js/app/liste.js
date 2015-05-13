@@ -16,10 +16,10 @@ var ListePageBuilder = (function () {
         this.htmlLoaded = htmlLoaded;
         var hash = window.location.hash;
         if (hash && hash.length > 0) {
-            var hashParams = hash.split("-");
+            var hashParams = hash.substr(1).split("-");
 
             //param 0 = type de page
-            this.pageName = hashParams[0].substr(1, hashParams[0].length);
+            this.pageName = hashParams[0];
 
             //param 1 = annee
             hashParams.length > 1 ? this.year = hashParams[1] : this.year = "2012";
@@ -235,7 +235,7 @@ var ListePage = (function (_super) {
             if (depnum.lastIndexOf("0") == 2)
                 depnum = depnum.substr(0, 2);
 
-            tbody.append("<tr><td>" + (i + 1) + "e</td><td>" + depnum + "</td><td>" + model.Nom + "</td><td>" + model.Moyenne + "</td><td>" + model.Gini.toFixed(4) + "</tr>");
+            tbody.append("<tr><td>" + (i + 1) + "e</td><td>" + depnum + "</td><td>" + "<a href=\"departement.html#" + model.DepNum + "-intro\">" + model.Nom + "</a></td><td>" + model.Moyenne + "</td><td>" + model.Gini.toFixed(4) + "</tr>");
         }
     };
     return ListePage;

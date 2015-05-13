@@ -454,10 +454,8 @@ var LorenzPage = (function (_super) {
                 labelOffset: {
                     y: 10
                 }
-            },
-            scaleAxis: true
+            }
         };
-        lorenzCurve = null;
     };
 
     LorenzPage.prototype.buildDropDown = function (trancheEveryYears) {
