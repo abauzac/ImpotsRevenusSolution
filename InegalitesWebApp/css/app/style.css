@@ -85,4 +85,21 @@ form.form-search:before {
 .liste-year__intro {
   margin-right: 100px;
 }
+.carte__france {
+  display: block;
+  margin: 0 auto;
+  height: 100%;
+}
+.wrapper__france {
+  margin: 0 auto;
+}
+.land {
+  cursor: pointer;
+}
+.land:focus {
+  fill: yellow;
+}
+.legend__square {
+  width: 16px;
+}
 /*# sourceMappingURL=style.css.map */

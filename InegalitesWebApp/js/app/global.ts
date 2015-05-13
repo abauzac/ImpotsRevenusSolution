@@ -49,6 +49,7 @@ interface IPageBuilder {
     buildPage(): void;
     buildContentPage(): void;
     pageName: string;
+    setPageName(pagename: string): void;
 }
 
 

@@ -495,10 +495,8 @@ class LorenzPage extends ContentPage {
                 labelOffset: {
                     y: 10
                 }
-            },
-            scaleAxis: true
+            }
         };
-        lorenzCurve = null;
 
     }
 
