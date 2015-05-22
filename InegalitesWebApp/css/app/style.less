@@ -1,4 +1,6 @@
 ﻿/* GLOBAL APP */
+
+
 a:focus{
     outline:none;
 }
@@ -107,4 +109,28 @@ form.form-search:before {
 
 .liste-year__intro{
     margin-right : 100px;
+}
+
+// map
+// svg created in pixels, cannot resize using CSS (nor js ?)
+// 550px * 590px
+.carte__france{ // svg
+    display:block;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.wrapper__france{
+    margin: 0 auto;
+}
+
+.land{
+    cursor:pointer;
+    &:focus{
+        fill: yellow;
+    }
+}
+
+.legend__square {
+  width: 16px;
 }

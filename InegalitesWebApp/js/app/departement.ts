@@ -64,14 +64,16 @@ class DepPageBuilder implements IPageBuilder {
                     "Status requête : " + xhr.status).build();
             }
         });
-
-
-
     }
+
+    public setPageName(value: string) {
+        this.domDepName.text(value);
+        document.title = value;
+    }
+
     public buildContentPage() {
 
-        this.domDepName.text(this.json.Nom);
-        document.title = this.json.Nom;
+        this.setPageName(this.json.Nom);
 
         var contentPage: ContentPage;
 
@@ -490,15 +492,9 @@ class LorenzPage extends ContentPage {
 
         this.optionsChart = {
             width: '320px',
-            height: '320px',
-            axisY: {
-                labelOffset: {
-                    y: 10
-                }
-            },
-            scaleAxis: true
+            height: '320px'
+            
         };
-        lorenzCurve = null;
 
     }
 
