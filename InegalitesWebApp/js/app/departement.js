@@ -58,9 +58,14 @@ var DepPageBuilder = (function () {
             }
         });
     };
+
+    DepPageBuilder.prototype.setPageName = function (value) {
+        this.domDepName.text(value);
+        document.title = value;
+    };
+
     DepPageBuilder.prototype.buildContentPage = function () {
-        this.domDepName.text(this.json.Nom);
-        document.title = this.json.Nom;
+        this.setPageName(this.json.Nom);
 
         var contentPage;
 
@@ -449,12 +454,7 @@ var LorenzPage = (function (_super) {
 
         this.optionsChart = {
             width: '320px',
-            height: '320px',
-            axisY: {
-                labelOffset: {
-                    y: 10
-                }
-            }
+            height: '320px'
         };
     };
 
